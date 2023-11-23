@@ -2,6 +2,7 @@
 #include <iostream>
 #include "matrix.h"
 
+
 template <typename U>
 std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter 
 {
