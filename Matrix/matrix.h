@@ -11,6 +11,10 @@ public:
     
     static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T> tvec)
     {
+        if (tvec.empty() || rows * cols != tvec.size())
+            return Matrix(0,0);
+
+        align(rows, cols, tvec);
         return Matrix(rows, cols, tvec);
     }
     
@@ -18,10 +22,10 @@ public:
     * and data is undefined-behaviour  */
     static Matrix makeMatrix(size_t rows, size_t cols, const T* data)
     {
-        return Matrix(rows, cols, data);
+        return makeMatrix(rows, cols, std::vector<T>(data, data + rows * cols));
     }
 
-    static Matrix makeMatrix(size_t rows, size_t cols, int val = 0)
+    static Matrix makeMatrix(size_t rows, size_t cols, T val = 0)
     {
         std::vector<T> data(rows * cols, val);
         return Matrix(rows, cols, data);
@@ -31,29 +35,34 @@ public:
 
     std::pair<size_t, size_t> size() const;
 
+    template<typename U>
+    explicit operator Matrix<U>() const; //conversion
+
+    inline T& operator()(size_t, size_t); // get index
+    
+    friend class Matrix;
 
 
-
-    Matrix& operator*=(T);
+    Matrix& operator*=(T); 
 
     template <typename U, typename T>
     friend Matrix<std::common_type_t<U, T>> operator*(const Matrix<U>& A, const Matrix<T>& B);
 
     template <typename T, typename U>
-    friend Matrix<T> operator*(const Matrix<T>&, U);
+    friend Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>&, U);
 
     template <typename T, typename U>
-    friend Matrix<T> operator*(U, const Matrix<T>&);
-  
+    friend Matrix<std::common_type_t<U, T>> operator*(U, const Matrix<T>&);
+
+    
+
     template <typename U>
     friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& A);
 
 private:
-    Matrix(size_t rows, size_t cols, std::vector<T> tvec);
-    Matrix(size_t rows, size_t cols, const T* data);
+    Matrix(size_t rows, size_t cols, std::vector<T> tvec = std::vector<T>());
 
-    static void align(Matrix &);
-
+    static void align(size_t, size_t, std::vector<T>&);
 
     
     size_t m_rows, m_cols;
@@ -66,20 +75,7 @@ private:
 template <typename T>
 Matrix<T>::Matrix(size_t rows, size_t cols, std::vector<T> tvec) :
     m_rows(rows), m_cols(cols), m_data(tvec)
-{
-    if (m_data.empty() || m_rows * m_cols != m_data.size()) {
-        m_rows = m_cols = 0;
-        return;
-    }
-    
-    align(*this);
-}
-
-
-template <typename T>
-Matrix<T>::Matrix(size_t rows, size_t cols, const T *data) : 
-Matrix(rows, cols, std::vector<T>(data, data + rows * cols))
-{} 
+{}
 
 template <typename T>
 Matrix<T>& Matrix<T>::operator*=(T scalar)
@@ -98,8 +94,8 @@ Matrix<T> Matrix<T>::makeLinSpace(T begin, T end, size_t n)
     size_t i;
     size_t k;
     double delta2;
-    
-    delta1 = n;
+  
+    delta1 = static_cast<double>(n);
     A.m_rows = 1;
 
     i = static_cast<size_t>(std::floor(delta1));
@@ -156,13 +152,26 @@ std::pair<size_t, size_t> Matrix<T>::size() const {
     return { m_rows, m_cols };
 }
 
+template<typename T>
+template<typename U>
+Matrix<T>::operator Matrix<U>() const 
+{
+    std::vector<U> data(m_data.begin(), m_data.end());
+    return Matrix<U>(m_rows, m_cols, data);
+}
+
+template<typename T>
+inline T& Matrix<T>::operator()(size_t row, size_t col)
+{
+    return m_data[row + m_rows * col];
+}
 
 template <typename U, typename T>
  Matrix<std::common_type_t<U, T>> operator*(const Matrix<U>& A, const Matrix<T>& B)
 {
     size_t m, i, inner, n, j, coffset, boffset, b_i, k, aoffset;
     std::common_type_t<U, T> temp;
-
+    
     if (A.m_cols != B.m_rows)
     {
         return Matrix<std::common_type_t<U, T>>::makeMatrix(0, 0);
@@ -218,37 +227,36 @@ template <typename U, typename T>
 
 
 template <typename T, typename U>
-Matrix<T> operator*(const Matrix<T>& A, U scalar)
+Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>& A, U scalar)
 {
 
     size_t size = A.m_rows * A.m_cols;
-    auto C = Matrix<T>::makeMatrix(A.m_rows, A.m_cols);
+    auto C = Matrix<std::common_type_t<U, T>>::makeMatrix(A.m_rows, A.m_cols);
 
     for (size_t i = 0; i < size; ++i) {
-        C.m_data[i] = A.m_data[i] * static_cast<T>(scalar);
+        C.m_data[i] = A.m_data[i] * static_cast<std::common_type_t<U, T>>(scalar);
     }
     return C;
 }
 
 template <typename T, typename U>
-Matrix<T> operator*(U scalar, const Matrix<T>& A)
+Matrix<std::common_type_t<U, T>> operator*(U scalar, const Matrix<T>& A)
 {
     return A * scalar;
 }
 
 
 template <typename T>
-void Matrix<T>::align(Matrix &A)
+void Matrix<T>::align(size_t row, size_t col, std::vector<T>& tvec)
 {
-    size_t size = A.m_rows * A.m_cols;
-    auto tvec{std::vector<T>(size)};
-    
-    tvec = A.m_data;
+    auto localvec{ std::vector<T>(row * col) };
 
-    for (size_t i{}, k{}; i < A.m_rows; ++i)
-        for (size_t j{}; j < A.m_cols; ++j)
-            A.m_data[i + A.m_rows * j] = tvec[k++];
-            
+    localvec = tvec;
+
+    for (size_t i{}, k{}; i < row; ++i)
+        for (size_t j{}; j < col; ++j)
+            tvec[i + row * j] = localvec[k++];
+
 }
 
 
