@@ -3,12 +3,11 @@
 #include <vector>
 #include <cmath>
 #include <limits>
-
+#include <iostream>
 template <typename T>
 class Matrix 
 {
 public:
-    
     
     static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T> tvec)
     {
@@ -28,7 +27,7 @@ public:
         return Matrix(rows, cols, data);
     }
 
-    static Matrix<T> makeLinSpace(T begin, T end, size_t n);
+    static Matrix makeLinSpace(T begin, T end, size_t n);
 
     std::pair<size_t, size_t> size() const;
 
@@ -38,7 +37,7 @@ public:
     Matrix& operator*=(T);
 
     template <typename U, typename T>
-    friend Matrix<U> operator*(const Matrix<U>& A, const Matrix<T>& B);
+    friend Matrix<std::common_type_t<U, T>> operator*(const Matrix<U>& A, const Matrix<T>& B);
 
     template <typename T, typename U>
     friend Matrix<T> operator*(const Matrix<T>&, U);
@@ -68,7 +67,7 @@ template <typename T>
 Matrix<T>::Matrix(size_t rows, size_t cols, std::vector<T> tvec) :
     m_rows(rows), m_cols(cols), m_data(tvec)
 {
-    if (tvec.empty() || rows * cols != tvec.size()) {
+    if (m_data.empty() || m_rows * m_cols != m_data.size()) {
         m_rows = m_cols = 0;
         return;
     }
@@ -159,17 +158,17 @@ std::pair<size_t, size_t> Matrix<T>::size() const {
 
 
 template <typename U, typename T>
-Matrix<U> operator*(const Matrix<U>& A, const Matrix<T>& B)
+ Matrix<std::common_type_t<U, T>> operator*(const Matrix<U>& A, const Matrix<T>& B)
 {
     size_t m, i, inner, n, j, coffset, boffset, b_i, k, aoffset;
-    U temp;
+    std::common_type_t<U, T> temp;
 
     if (A.m_cols != B.m_rows)
     {
-        return Matrix<U>::makeMatrix(0, 0);
+        return Matrix<std::common_type_t<U, T>>::makeMatrix(0, 0);
     }
 
-    auto C = Matrix<U>::makeMatrix(A.m_rows, B.m_cols);
+    auto C = Matrix<std::common_type_t<U, T>>::makeMatrix(A.m_rows, B.m_cols);
 
     m = A.m_rows;
 
@@ -180,12 +179,12 @@ Matrix<U> operator*(const Matrix<U>& A, const Matrix<T>& B)
             inner = B.m_cols;
             for (n = 0; n < inner; n++)
             {
-                C.m_data[i + C.m_rows * n] = (U)0.0;
+                C.m_data[i + C.m_rows * n] = static_cast<std::common_type_t<U, T>>(0.0);
                 j = A.m_cols;
                 for (coffset = 0; coffset < j; coffset++)
                 {
-                    C.m_data[i + C.m_rows * n] += A.m_data[i + A.m_rows * coffset] *
-                        static_cast<U>(B.m_data[coffset + B.m_rows * n]);
+                    C.m_data[i + C.m_rows * n] += static_cast<std::common_type_t<U, T>>(A.m_data[i + A.m_rows * coffset]) *
+                        static_cast<std::common_type_t<U, T>>(B.m_data[coffset + B.m_rows * n]);
                 }
             }
         }
@@ -200,16 +199,16 @@ Matrix<U> operator*(const Matrix<U>& A, const Matrix<T>& B)
             coffset = j * m;
             boffset = j * inner;
             for (b_i = 0; b_i < m; b_i++)
-                C.m_data[coffset + b_i] = (U)0.0F;
+                C.m_data[coffset + b_i] = static_cast < std::common_type_t<U, T>>(0.0F);
 
             for (k = 0; k < inner; k++)
             {
                 aoffset = k * m;
-                temp = static_cast<U>(B.m_data[boffset + k]);
+                temp = static_cast<std::common_type_t<U, T>>(B.m_data[boffset + k]);
                 for (b_i = 0; b_i < m; b_i++)
                 {
                     i = coffset + b_i;
-                    C.m_data[i] += temp * static_cast<U>(A.m_data[aoffset + b_i]);
+                    C.m_data[i] += temp * static_cast<std::common_type_t<U, T>>(A.m_data[aoffset + b_i]);
                 }
             }
         }

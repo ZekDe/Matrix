@@ -19,12 +19,12 @@ int main() {
 
     auto A = Matrix<int>::makeMatrix(2, 3, dataA);
     auto B = Matrix<float>::makeMatrix(3, 2, dataB);
-    auto C = Matrix<int>::makeMatrix(2, 2);
-    //C *= 2;
-    C = 2 * A * B;
+    auto C = Matrix<float>::makeMatrix(2, 2);
+   
+    C =  2.2 * A * B;
     C *= 2;
     std::cout << C;
-    
+
     auto D = Matrix<float>::makeLinSpace(1.0, 10.0, 15);
 
     std::cout << D;
