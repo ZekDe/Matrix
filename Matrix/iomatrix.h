@@ -18,20 +18,20 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
         for (size_t j{}; j < cols; ++j) {
             std::stringstream ss;
             ss << A(i, j);
-            line_length = line_length + ss.str().length();
+            line_length += ss.str().length();
         }
         line_length_max = std::max(line_length_max, line_length);
         line_length = 0;
     }
     // get max length of line
-    line_length_max = line_length_max + cols - 1;
+    line_length_max += (cols - 1);
 
     std::stringstream ss;
     ss << rows << cols;
     size_t digits_length = ss.str().length() + 1;
     digits_length = line_length_max - digits_length;
 
-
+    
     std::cout << std::string(line_length_max, '-') << '\n';
 
     os  << std::string(digits_length / 2, ' ')
@@ -42,8 +42,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
     std::cout << std::string(line_length_max, '-') << '\n';
    
 
-    for (size_t i{}; i < rows; i++)
-    {
+    for (size_t i{}; i < rows; i++){
         for (size_t j{}; j < cols; j++)
             os << A(i,j) << " ";
 
