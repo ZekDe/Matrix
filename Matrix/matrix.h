@@ -2,8 +2,7 @@
 #include <memory>
 #include <vector>
 #include <cmath>
-#include <limits>
-#include <iostream>
+
 template <typename T>
 class Matrix 
 {
@@ -38,7 +37,8 @@ public:
     template<typename U>
     explicit operator Matrix<U>() const; //conversion
 
-    inline T& operator()(size_t, size_t); // get index
+    const T& operator()(size_t, size_t) const; // get index
+    T& operator()(size_t, size_t); // set index
     
     friend class Matrix;
 
@@ -59,16 +59,16 @@ public:
     template <typename U>
     friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& A);
 
+    template <typename U>
+    friend std::istream& operator<<(std::istream& is, Matrix<U>& A);
+
 private:
     Matrix(size_t rows, size_t cols, std::vector<T> tvec = std::vector<T>());
 
     static void align(size_t, size_t, std::vector<T>&);
 
-    
     size_t m_rows, m_cols;
     std::vector<T> m_data;
-
-   
 };
 
 
@@ -161,6 +161,12 @@ Matrix<T>::operator Matrix<U>() const
 }
 
 template<typename T>
+const inline T& Matrix<T>::operator()(size_t row, size_t col) const
+{
+    return m_data[row + m_rows * col];
+}
+
+template<typename T>
 inline T& Matrix<T>::operator()(size_t row, size_t col)
 {
     return m_data[row + m_rows * col];
@@ -224,6 +230,7 @@ template <typename U, typename T>
     }
     return C;
 }
+
 
 
 template <typename T, typename U>
