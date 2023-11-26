@@ -13,7 +13,7 @@ int main() {
      3,2,1};
 
     std::vector<float> dataB = 
-    {4.1,5.2,
+    {8.1,5.2,
      6.3,7.44,
      8.5,9.6};
 
@@ -32,13 +32,19 @@ int main() {
     auto C = Matrix<double>::makeMatrix(2, 2);
     auto D = Matrix<double>::makeMatrix(3, 2, dataD);
     auto E = Matrix<int>::makeMatrix(3, 2, dataE);
-   
+    auto F = Matrix<double>::makeMatrix(1, 3, 1.0);
 
 
+    auto I = Matrix<double>::makeMatrix(1, 4, std::vector<double>{1,2,3,4});
+    auto J = Matrix<double>::makeMatrix(4, 1, std::vector<double>{
+                                                                  1, 
+                                                                  2, 
+                                                                  3,
+                                                                  4});
+    //auto H = B * D;
+
+    cout << (B / A);
     
-   
-
-
     return 0;
 }
 

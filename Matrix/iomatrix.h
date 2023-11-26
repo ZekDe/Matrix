@@ -28,7 +28,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
 
     std::stringstream ss;
     ss << rows << cols;
-    size_t digits_length = ss.str().length() + 1;
+    size_t digits_length = ss.str().length();
     digits_length = line_length_max - digits_length;
 
     
