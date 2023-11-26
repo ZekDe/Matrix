@@ -5,6 +5,18 @@
 
 using namespace std;
 
+template<typename T>
+void printMatrix(const Matrix<T> &A)
+{
+    auto [rows, cols] = A.size();
+    for (size_t i{}; i < rows; ++i){
+        for (size_t j{}; j < cols; ++j)
+            cout << A(i, j) << " ";
+        cout << "\n";
+    }
+        
+
+}; 
 
 int main() {
   
@@ -41,9 +53,9 @@ int main() {
                                                                   2, 
                                                                   3,
                                                                   4});
-    //auto H = B * D;
 
-    cout << (B / A);
+    //printMatrix(J);
+    cout << E;
     
     return 0;
 }

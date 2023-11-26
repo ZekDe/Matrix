@@ -250,8 +250,7 @@ template<typename T>
 Matrix<T> Matrix<T>::operator++(int)
 {
     auto C = Matrix(m_rows, m_cols, this->m_data);
-
-    *this += 1;
+    operator++();
     return C;
 }
 
