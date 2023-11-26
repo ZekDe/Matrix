@@ -3,12 +3,18 @@
 #include <vector>
 #include <cmath>
 
+
+
+
 template <typename T>
 class Matrix 
 {
 public:
-    
-    static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T> tvec)
+
+    template <typename U, typename T>
+    using ut = Matrix<std::common_type_t<U, T>>;
+
+    static Matrix<T> makeMatrix(size_t rows, size_t cols, std::vector<T> tvec)
     {
         if (tvec.empty() || rows * cols != tvec.size())
             return Matrix(0,0);
@@ -32,6 +38,7 @@ public:
 
     static Matrix makeLinSpace(T begin, T end, size_t n);
 
+
     std::pair<size_t, size_t> size() const;
 
     template<typename U>
@@ -39,11 +46,32 @@ public:
 
     const T& operator()(size_t, size_t) const; // get index
     T& operator()(size_t, size_t); // set index
-    
+
+    template <typename U>
+    Matrix& operator*=(U);
+
+    template<typename U>
+    Matrix& operator/=(U); 
+
+
+    template<typename U>
+    Matrix& operator+=(const Matrix<U>&); 
+
+    template<typename U>
+    Matrix& operator+=(U);
+
+    template<typename U>
+    Matrix& operator-=(const Matrix<U>&);
+
+    template<typename U>
+    Matrix& operator-=(U);
+
+    Matrix operator-() const;
+    Matrix operator+() const;
+
+
+    // friends
     friend class Matrix;
-
-
-    Matrix& operator*=(T); 
 
     template <typename U, typename T>
     friend Matrix<std::common_type_t<U, T>> operator*(const Matrix<U>& A, const Matrix<T>& B);
@@ -51,50 +79,44 @@ public:
     template <typename T, typename U>
     friend Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>&, U);
 
-    template <typename T, typename U>
-    friend Matrix<std::common_type_t<U, T>> operator*(U, const Matrix<T>&);
-
-    
-
-    template <typename U>
-    friend std::ostream& operator<<(std::ostream& os, const Matrix<U>& A);
-
-    template <typename U>
-    friend std::istream& operator<<(std::istream& is, Matrix<U>& A);
+    template<typename T, typename U>
+    friend Matrix<std::common_type_t<U, T>> operator/(U, Matrix<T>);
 
 private:
-    Matrix(size_t rows, size_t cols, std::vector<T> tvec = std::vector<T>());
+    Matrix(size_t rows, size_t cols, std::vector<T> tvec = std::vector<T>()) :
+        m_rows(rows), m_cols(cols), m_data(tvec)
+    {}
 
     static void align(size_t, size_t, std::vector<T>&);
 
     size_t m_rows, m_cols;
     std::vector<T> m_data;
+ 
 };
 
 
-template <typename T>
-Matrix<T>::Matrix(size_t rows, size_t cols, std::vector<T> tvec) :
-    m_rows(rows), m_cols(cols), m_data(tvec)
-{}
 
-template <typename T>
-Matrix<T>& Matrix<T>::operator*=(T scalar)
-{
-    *this = *this * scalar;
-    return *this;
-}
+
+
+
+
+
+
+
+
+
 
 template <typename T>
 Matrix<T> Matrix<T>::makeLinSpace(T begin, T end, size_t n)
 {
-    Matrix<T> A = Matrix<T>::makeMatrix(1, n);
+    Matrix A = Matrix::makeMatrix(1, n);
 
     double delta1;
     size_t tmp;
     size_t i;
     size_t k;
     double delta2;
-  
+
     delta1 = static_cast<double>(n);
     A.m_rows = 1;
 
@@ -147,10 +169,200 @@ Matrix<T> Matrix<T>::makeLinSpace(T begin, T end, size_t n)
     return A;
 }
 
+
+
+template<typename T>
+template<typename U>
+Matrix<T>& Matrix<T>::operator*=(U scalar)
+{
+    *this = *this * static_cast<T>(scalar);
+    return *this;
+}
+
+
+
+template<typename T>
+template<typename U>
+Matrix<T>& Matrix<T>::operator/=(U scalar)
+{
+    size_t size = m_rows * m_cols;
+    for (size_t i{}; i < size; ++i)
+        m_data[i] /= scalar;
+
+    return *this;
+}
+
+
+
+template<typename T, typename U>
+inline Matrix<std::common_type_t<U, T>> operator/(Matrix<T> A, U scalar)
+{
+    return A /= scalar;
+}
+
+template<typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator/(U scalar, Matrix<T> A)
+{    
+    auto C = Matrix<std::common_type_t<U, T>>::makeMatrix(A.m_rows, A.m_cols, 
+        std::vector<std::common_type_t<U, T>>(A.m_rows * A.m_cols));
+
+    for (size_t i{}; i < A.m_rows; ++i)
+        for (size_t j{}; j < A.m_cols; ++j)
+            C(i, j) = scalar / A(i, j);
+
+    return C;
+}
+
+
+
+template<typename T>
+template<typename U>
+Matrix<T>& Matrix<T>::operator+=(const Matrix<U>& A)
+{
+    auto [Arows, Acols] = A.size();
+    size_t size = m_rows * m_cols;
+
+    if ((Arows != m_rows) || (Acols != m_cols))
+        return *this; // todo: exception throw 
+
+    for (size_t i{}; i < size; ++i)
+        m_data[i] += A.m_data[i];
+
+    return *this;
+}
+
+
+
+template<typename T>
+template<typename U>
+Matrix<T>& Matrix<T>::operator+=(U scalar)
+{
+    size_t size = m_rows * m_cols;
+    for (size_t i{}; i < size; ++i)
+        m_data[i] += scalar;
+    return *this;
+}
+
+
+
+template<typename T, typename U>
+inline Matrix<std::common_type_t<U, T>> operator+(Matrix<T> A, U scalar)
+{
+    return Matrix<std::common_type_t<U, T>>(A += scalar);
+}
+
+
+template<typename T, typename U>
+inline Matrix<std::common_type_t<U, T>> operator+(U scalar, Matrix<T> A)
+{
+    return Matrix<std::common_type_t<U, T>>(A += scalar);
+}
+
+
+
+template <typename T, typename U>
+inline Matrix<std::common_type_t<U, T>> operator+(Matrix<T> A, const Matrix<U>& B)
+{
+    // if A is temporary object, result is copy elision
+    return Matrix<std::common_type_t<U, T>>(A += B);
+}
+
+
+
+template<typename T>
+inline Matrix<T> Matrix<T>::operator+() const
+{
+    return *this;
+}
+
+
+
+template<typename T>
+template<typename U>
+Matrix<T>& Matrix<T>::operator-=(const Matrix<U>& A)
+{
+    return *this += -A;
+}
+
+template<typename T>
+template<typename U>
+Matrix<T>& Matrix<T>::operator-=(U scalar)
+{
+
+    return *this += -scalar;
+}
+
+template<typename T, typename U>
+inline Matrix<std::common_type_t<U, T>> operator-(Matrix<T> A, U scalar)
+{
+    return Matrix<std::common_type_t<U, T>>(A -= scalar);
+}
+
+
+template<typename T, typename U>
+inline Matrix<std::common_type_t<U, T>> operator-(U scalar, Matrix<T> A)
+{
+    A -= scalar;
+    A = -A;
+    return Matrix<std::common_type_t<U, T>>(A);
+}
+
+
+
+template <typename T, typename U>
+inline Matrix<std::common_type_t<U, T>> operator-(Matrix<T> A, const Matrix<U>& B)
+{
+    // if A is temporary object, result is copy elision
+    return Matrix<std::common_type_t<U, T>>(A -= B);
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::operator-() const
+{
+    std::vector<T> vec(m_rows * m_cols);
+    auto C{ Matrix::makeMatrix(m_rows, m_cols, vec) };
+    
+    for (size_t i{}; i < m_rows; ++i)
+        for (size_t j{}; j < m_cols; ++j)
+            C(i, j) = -(*this)(i, j);
+
+    return C;
+}
+
+
+
+
+
+
+
+
+
 template <typename T>
-std::pair<size_t, size_t> Matrix<T>::size() const {
+inline bool operator==(const Matrix<T>& A, const Matrix<T>& B)
+{
+    auto [Arows, Acols] = A.size();
+    auto [Brows, Bcols] = B.size();
+
+    if ((Arows != Brows) || (Acols != Bcols))
+        return false;
+
+    for (size_t i{}; i < Arows; ++i)
+        for (size_t j{}; j < Acols; ++j)
+            if (std::abs(A(i, j) - B(i, j)) > FLT_EPSILON)
+                return false;
+    return true;
+    
+}
+
+
+
+template <typename T>
+std::pair<size_t, size_t> Matrix<T>::size() const 
+{
     return { m_rows, m_cols };
 }
+
+
 
 template<typename T>
 template<typename U>
@@ -160,17 +372,23 @@ Matrix<T>::operator Matrix<U>() const
     return Matrix<U>(m_rows, m_cols, data);
 }
 
+
+
 template<typename T>
-const inline T& Matrix<T>::operator()(size_t row, size_t col) const
+const T& Matrix<T>::operator()(size_t row, size_t col) const
 {
     return m_data[row + m_rows * col];
 }
 
+
+
 template<typename T>
-inline T& Matrix<T>::operator()(size_t row, size_t col)
+T& Matrix<T>::operator()(size_t row, size_t col)
 {
     return m_data[row + m_rows * col];
 }
+
+
 
 template <typename U, typename T>
  Matrix<std::common_type_t<U, T>> operator*(const Matrix<U>& A, const Matrix<T>& B)
@@ -196,11 +414,11 @@ template <typename U, typename T>
             {
                 C.m_data[i + C.m_rows * n] = static_cast<std::common_type_t<U, T>>(0.0);
                 j = A.m_cols;
+
                 for (coffset = 0; coffset < j; coffset++)
-                {
                     C.m_data[i + C.m_rows * n] += static_cast<std::common_type_t<U, T>>(A.m_data[i + A.m_rows * coffset]) *
-                        static_cast<std::common_type_t<U, T>>(B.m_data[coffset + B.m_rows * n]);
-                }
+                                                  static_cast<std::common_type_t<U, T>>(B.m_data[coffset + B.m_rows * n]);
+
             }
         }
     }
@@ -246,11 +464,14 @@ Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>& A, U scalar)
     return C;
 }
 
+
+
 template <typename T, typename U>
-Matrix<std::common_type_t<U, T>> operator*(U scalar, const Matrix<T>& A)
+inline Matrix<std::common_type_t<U, T>> operator*(U scalar, const Matrix<T>& A)
 {
     return A * scalar;
 }
+
 
 
 template <typename T>
