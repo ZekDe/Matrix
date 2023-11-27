@@ -42,7 +42,7 @@ int main() {
      2, 3,
      3, 4};
 
-    auto A = Matrix<int>::makeMatrix(1, 1, 0);
+    auto A = Matrix<int>::makeMatrix(0, 0, 0);
     auto B = Matrix<float>::makeMatrix(3, 2, dataB);
     auto C = Matrix<double>::makeMatrix(2, 2);
     auto D = Matrix<double>::makeMatrix(3, 2, dataD);
@@ -57,7 +57,10 @@ int main() {
     auto O = Matrix<int>::makeMatrix(3, 3, 5);
 
     //printMatrix(K);
-    cout << --N;
+  
+    if(!A)
+    cout << A;
+
     
     return 0;
 }

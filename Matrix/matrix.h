@@ -42,6 +42,9 @@ public:
     template<typename U>
     explicit operator Matrix<U>() const; //conversion
 
+    explicit operator bool() const;
+
+
     const T& operator()(size_t, size_t) const; // get index
     T& operator()(size_t, size_t); // set index
 
@@ -168,6 +171,9 @@ Matrix<T> Matrix<T>::makeLinSpace(T begin, T end, size_t n)
 
 
 
+
+
+
 template<typename T>
 template<typename U>
 Matrix<T>& Matrix<T>::operator/=(U scalar)
@@ -178,8 +184,6 @@ Matrix<T>& Matrix<T>::operator/=(U scalar)
 
     return *this;
 }
-
-
 
 template<typename T, typename U>
 inline Matrix<std::common_type_t<U, T>> operator/(Matrix<T> A, U scalar)
@@ -223,6 +227,11 @@ inline Matrix<std::common_type_t<U, T>> operator/(Matrix<T> A, Matrix<U> B)
     return C;
 }
 
+
+
+
+
+
 template<typename T>
 Matrix<T>& Matrix<T>::operator++()
 {
@@ -252,6 +261,12 @@ Matrix<T> Matrix<T>::operator--(int)
     *this -= 1;
     return C;
 }
+
+
+
+
+
+
 
 template<typename T>
 template<typename U>
@@ -315,6 +330,11 @@ inline Matrix<T> Matrix<T>::operator+() const
 
 
 
+
+
+
+
+
 template<typename T>
 template<typename U>
 Matrix<T>& Matrix<T>::operator-=(const Matrix<U>& A)
@@ -367,13 +387,6 @@ inline Matrix<T> Matrix<T>::operator-() const
 }
 
 
-
-
-
-
-
-
-
 template <typename T>
 inline bool operator==(const Matrix<T>& A, const Matrix<T>& B)
 {
@@ -393,11 +406,17 @@ inline bool operator==(const Matrix<T>& A, const Matrix<T>& B)
 
 
 
+
+
 template <typename T>
 std::pair<size_t, size_t> Matrix<T>::size() const 
 {
     return { m_rows, m_cols };
 }
+
+
+
+
 
 
 
@@ -409,7 +428,19 @@ Matrix<T>::operator Matrix<U>() const
     return Matrix<U>(m_rows, m_cols, data);
 }
 
+template<typename T>
+Matrix<T>::operator bool() const
+{
+    auto size{ m_rows * m_cols };
+  
+    for (size_t i{}; i < size; ++i)
+        if (m_data[i] != 0){
+            return true;
+        }
+            
 
+    return  false;
+}
 
 template<typename T>
 const T& Matrix<T>::operator()(size_t row, size_t col) const
@@ -443,7 +474,6 @@ Matrix<T>& Matrix<T>::operator*=(U scalar)
     *this = *this * (T)scalar;
     return *this;
 }
-
 
 
 
@@ -489,6 +519,9 @@ inline Matrix<std::common_type_t<U, T>> operator*(U scalar, const Matrix<T>& A)
 {
     return A * scalar;
 }
+
+
+
 
 
 

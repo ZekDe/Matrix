@@ -9,6 +9,11 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
 {
     auto [rows, cols] = A.size();
 
+    if (!rows || !cols) {
+        os << rows << "x" << cols << "\n" ;
+        return os;
+    }
+        
 
     int line_length_max = 0;
     for (size_t i{}; i < rows; ++i){
