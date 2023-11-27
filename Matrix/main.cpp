@@ -3,6 +3,8 @@
 #include <sstream>
 
 
+
+
 using namespace std;
 
 template<typename T>
@@ -18,6 +20,7 @@ void printMatrix(const Matrix<T> &A)
 
 }; 
 
+#define PI 3.1415926535
 int main() {
   
     std::vector<int> dataA = 
@@ -39,7 +42,7 @@ int main() {
      2, 3,
      3, 4};
 
-    auto A = Matrix<int>::makeMatrix(2, 3, dataA);
+    auto A = Matrix<int>::makeMatrix(1, 1, 0);
     auto B = Matrix<float>::makeMatrix(3, 2, dataB);
     auto C = Matrix<double>::makeMatrix(2, 2);
     auto D = Matrix<double>::makeMatrix(3, 2, dataD);
@@ -47,15 +50,14 @@ int main() {
     auto F = Matrix<double>::makeMatrix(1, 3, 1.0);
 
 
-    auto I = Matrix<double>::makeMatrix(1, 4, std::vector<double>{1,2,3,4});
-    auto J = Matrix<double>::makeMatrix(4, 1, std::vector<double>{
-                                                                  1, 
-                                                                  2, 
-                                                                  3,
-                                                                  4});
+    auto K = Matrix<float>::makeLinSpace(1, PI, 1);
+    auto L = Matrix<double>::makeLinSpace(1, PI, 20);
+    auto M = Matrix<int>::makeLinSpace(1, PI, 20);
+    auto N = Matrix<int>::makeMatrix(3, 3, 4);
+    auto O = Matrix<int>::makeMatrix(3, 3, 5);
 
-    //printMatrix(J);
-    cout << E;
+    //printMatrix(K);
+    cout << --N;
     
     return 0;
 }

@@ -115,71 +115,55 @@ private:
 
 
 
+
+
 template <typename T>
 Matrix<T> Matrix<T>::makeLinSpace(T begin, T end, size_t n)
 {
-    Matrix A = Matrix::makeMatrix(1, n);
+    if (n < 1)
+        return Matrix::makeMatrix(0, 0); //todo: exception
 
-    double delta1;
-    size_t tmp;
-    size_t i;
-    size_t k;
-    double delta2;
+    Matrix C = Matrix::makeMatrix(1, n);
 
-    delta1 = static_cast<double>(n);
-    A.m_rows = 1;
+    C.m_data[n - 1] = end;
+    C.m_data[0] = begin;
 
-    i = static_cast<size_t>(std::floor(delta1));
-    A.m_cols = i;
+    if (n == 1)
+        return C;
 
-    if (i >= 1)
+    
+    if ((begin == -end) && (n > 2))
     {
-        tmp = i - 1;
-        A.m_data[tmp] = end;
-        if (A.m_cols >= 2)
-        {
-            A.m_data[0] = begin;
-            if (A.m_cols >= 3)
-            {
-                if ((begin == -end) && (i > 2))
-                {
-                    for (k = 2; k <= tmp; k++) {
-                        A.m_data[k - 1] = static_cast<T>(end * ((double)(((k << 1) - i) - 1) / ((double)i - 1.0)));
-                    }
+        for (size_t i{2}; i <= n; ++i)
+            C.m_data[i - 1] = static_cast<T>(end * ((double)(((i << 1) - n) - 1) / ((double)n - 1.0)));
 
-                    if ((i & 1) == 1)
-                    {
-                        A.m_data[i >> 1] = (T)0.0;
-                    }
-                }
-                else if ((begin < (T)0.0) != (end < (T)0.0))
-                {
-                    delta1 = begin / (static_cast<double>(A.m_cols) - 1.0);
-                    delta2 = end / (static_cast<double>(A.m_cols) - 1.0);
-                    tmp = A.m_cols;
-                    for (k = 0; k <= tmp - 3; k++)
-                    {
-                        A.m_data[k + 1] = static_cast<T>((begin + delta2 * (static_cast<double>(k) + 1.0)) - delta1 *
-                            (static_cast<double>(k) + 1.0));
-                    }
-                }
-                else
-                {
-                    delta1 = (end - begin) / (static_cast<double>(A.m_cols) - 1.0);
-                    tmp = A.m_cols;
-                    for (k = 0; k <= tmp - 3; k++)
-                    {
-                        A.m_data[k + 1] = static_cast<T>(begin + (static_cast<double>(k) + 1.0) * delta1);
-                    }
-                }
-            }
+        if ((n & 1) == 1)
+        {
+            C.m_data[n >> 1] = (T)0.0;
         }
     }
-    return A;
+    else if ((begin < (T)0.0) != (end < (T)0.0))
+    {
+        size_t val = C.m_cols - 1;
+        double delta1 = begin / static_cast<double>(val);
+        double delta2 = end / static_cast<double>(val);
+
+        val = C.m_cols - 3;
+        for (size_t i{}; i <= val; ++i)
+            C.m_data[i + 1] = static_cast<T>((begin + delta2 * (static_cast<double>(i) + 1.0)) - delta1 * (static_cast<double>(i) + 1.0));
+    }
+    else
+    {
+        size_t val = C.m_cols - 1;
+        double delta1 = (end - begin) / static_cast<double>(val);
+        
+        val = C.m_cols - 3;
+        for (size_t i{}; i <= val; ++i)
+            C.m_data[i + 1] = static_cast<T>(begin + (static_cast<double>(i) + 1.0) * delta1);
+    }
+ 
+    return C;
 }
-
-
-
 
 
 
@@ -250,7 +234,7 @@ template<typename T>
 Matrix<T> Matrix<T>::operator++(int)
 {
     auto C = Matrix(m_rows, m_cols, this->m_data);
-    operator++();
+    *this += 1;
     return C;
 }
 
