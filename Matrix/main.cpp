@@ -16,8 +16,6 @@ void printMatrix(const Matrix<T> &A)
             cout << A(i, j) << " ";
         cout << "\n";
     }
-        
-
 }; 
 
 #define PI 3.1415926535
@@ -43,23 +41,30 @@ int main() {
      3, 4};
 
     auto A = Matrix<int>::makeMatrix(0, 0, 0);
-    auto B = Matrix<float>::makeMatrix(3, 2, dataB);
+    auto B = Matrix<float>::makeMatrix(3, 2, move(dataB));
     auto C = Matrix<double>::makeMatrix(2, 2);
-    auto D = Matrix<double>::makeMatrix(3, 2, dataD);
-    auto E = Matrix<int>::makeMatrix(3, 2, dataE);
-    auto F = Matrix<double>::makeMatrix(1, 3, 1.0);
-
+    auto D = Matrix<double>::makeMatrix(3, 2, move(dataD));
+    auto E = Matrix<int>::makeMatrix(3, 2, move(dataE));
+    auto F = Matrix<double>::makeMatrix(3, 1, 1.0);
 
     auto K = Matrix<float>::makeLinSpace(1, PI, 1);
     auto L = Matrix<double>::makeLinSpace(1, PI, 20);
     auto M = Matrix<int>::makeLinSpace(1, PI, 20);
     auto N = Matrix<int>::makeMatrix(3, 3, 4);
-    auto O = Matrix<int>::makeMatrix(3, 3, 5);
+    auto O = Matrix<int>::makeMatrix(1, 3, 5);
 
     //printMatrix(K);
+
+    auto &get = O(0, 0);
+    get = 10;
+    cout << O(0, 0);
   
-    if(!A)
-    cout << A;
+    //cout << (A && B);
+    //while (cin >> x) {
+    //    auto A = Matrix<int>::makeMatrix(x, x, x);
+    //    cout << A;
+    //}
+  
 
     
     return 0;

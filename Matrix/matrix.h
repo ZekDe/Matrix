@@ -40,13 +40,13 @@ public:
 
 
     template<typename U>
-    explicit operator Matrix<U>() const; //conversion
+    explicit operator Matrix<U>() const;
 
     explicit operator bool() const;
 
 
-    const T& operator()(size_t, size_t) const; // get index
-    T& operator()(size_t, size_t); // set index
+    const T& operator()(size_t, size_t) const;
+    T& operator()(size_t, size_t);
 
     template <typename U>
     Matrix& operator*=(U);
