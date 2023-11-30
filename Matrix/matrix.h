@@ -100,7 +100,7 @@ private:
     static void align(size_t, size_t, std::vector<T>&);
 
     size_t m_rows, m_cols;
-    std::vector<T> m_data
+    std::vector<T> m_data;
 };
 
 

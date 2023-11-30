@@ -40,7 +40,7 @@ int main() {
      2, 3,
      3, 4};
 
-    auto A = Matrix<int>::makeMatrix(0, 0, 0);
+    auto A = Matrix<int>::makeMatrix(0, 0);
     auto B = Matrix<float>::makeMatrix(3, 2, move(dataB));
     auto C = Matrix<double>::makeMatrix(2, 2);
     auto D = Matrix<double>::makeMatrix(3, 2, move(dataD));
@@ -53,9 +53,7 @@ int main() {
     auto N = Matrix<int>::makeMatrix(1, 3, 4);
     auto O = Matrix<int>::makeMatrix(1, 3, 5);
 
-  
-  
-
+ 
     
     return 0;
 }
