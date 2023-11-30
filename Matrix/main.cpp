@@ -50,20 +50,10 @@ int main() {
     auto K = Matrix<float>::makeLinSpace(1, PI, 1);
     auto L = Matrix<double>::makeLinSpace(1, PI, 20);
     auto M = Matrix<int>::makeLinSpace(1, PI, 20);
-    auto N = Matrix<int>::makeMatrix(3, 3, 4);
+    auto N = Matrix<int>::makeMatrix(1, 3, 4);
     auto O = Matrix<int>::makeMatrix(1, 3, 5);
 
-    //printMatrix(K);
-
-    auto &get = O(0, 0);
-    get = 10;
-    cout << O(0, 0);
-  
-    //cout << (A && B);
-    //while (cin >> x) {
-    //    auto A = Matrix<int>::makeMatrix(x, x, x);
-    //    cout << A;
-    //}
+    cout << (A && B);
   
 
     

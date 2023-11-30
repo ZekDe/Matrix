@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 #include <vector>
 #include <cmath>
 
@@ -359,11 +358,8 @@ inline Matrix<std::common_type_t<U, T>> operator-(Matrix<T> A, U scalar)
 template<typename T, typename U>
 inline Matrix<std::common_type_t<U, T>> operator-(U scalar, Matrix<T> A)
 {
-    A -= scalar;
-    A = -A;
-    return Matrix<std::common_type_t<U, T>>(A);
+    return Matrix<std::common_type_t<U, T>>(-A + scalar);
 }
-
 
 
 template <typename T, typename U>
@@ -381,7 +377,7 @@ inline Matrix<T> Matrix<T>::operator-() const
     for (size_t i{}; i < m_rows * m_cols; ++i)
         vec[i] = -this->m_data[i];
 
-    auto C{ Matrix(m_rows, m_cols, vec) };
+    auto C{ Matrix(m_rows, m_cols, std::move(vec)) };
 
     return C;
 }
@@ -424,8 +420,7 @@ template<typename T>
 template<typename U>
 Matrix<T>::operator Matrix<U>() const 
 {
-    std::vector<U> data(m_data.begin(), m_data.end());
-    return Matrix<U>(m_rows, m_cols, data);
+    return Matrix<U>(m_rows, m_cols, std::vector<U>(m_data.begin(), m_data.end()));
 }
 
 template<typename T>
@@ -434,11 +429,9 @@ Matrix<T>::operator bool() const
     auto size{ m_rows * m_cols };
   
     for (size_t i{}; i < size; ++i)
-        if (m_data[i] != 0){
+        if (m_data[i] != 0)
             return true;
-        }
             
-
     return  false;
 }
 
