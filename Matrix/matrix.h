@@ -9,13 +9,13 @@ template <typename T>
 class Matrix 
 {
 public:
-    static Matrix<T> makeMatrix(size_t rows, size_t cols, std::vector<T> tvec)
+    static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T> tvec)
     {
         if (tvec.empty() || rows * cols != tvec.size())
             return Matrix(0,0);
 
         align(rows, cols, tvec);
-        return Matrix(rows, cols, tvec);
+        return Matrix(rows, cols, std::move(tvec));
     }
     
     /* This must be used carefully, in case of mismatched rows, cols
@@ -93,16 +93,14 @@ public:
 
 private:
     Matrix(size_t rows, size_t cols, std::vector<T> tvec = std::vector<T>()) :
-        m_rows(rows), m_cols(cols), m_data(tvec)
+        m_rows(rows), m_cols(cols), m_data(move(tvec))
     {}
     
     
-
     static void align(size_t, size_t, std::vector<T>&);
 
     size_t m_rows, m_cols;
-    std::vector<T> m_data;
- 
+    std::vector<T> m_data
 };
 
 
@@ -192,7 +190,7 @@ inline Matrix<std::common_type_t<U, T>> operator/(Matrix<T> A, U scalar)
 
 template<typename T, typename U>
 Matrix<std::common_type_t<U, T>> operator/(U scalar, Matrix<T> A)
-{     
+{
     size_t size = A.m_rows * A.m_cols;
     auto C = Matrix<std::common_type_t<U, T>>::makeMatrix(A.m_rows, A.m_cols);
 

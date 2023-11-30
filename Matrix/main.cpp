@@ -53,7 +53,7 @@ int main() {
     auto N = Matrix<int>::makeMatrix(1, 3, 4);
     auto O = Matrix<int>::makeMatrix(1, 3, 5);
 
-    cout << (A && B);
+  
   
 
     
