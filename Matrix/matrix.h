@@ -31,8 +31,8 @@ public:
     }
 
     static Matrix makeLinSpace(T begin, T end, size_t n);
-
-
+    static Matrix makeLinInc(T begin, T interval, T end);
+    
     std::pair<size_t, size_t> size() const;
 
     
@@ -166,7 +166,22 @@ Matrix<T> Matrix<T>::makeLinSpace(T begin, T end, size_t n)
     return C;
 }
 
+template<typename T>
+Matrix<T> Matrix<T>::makeLinInc(T first, T step, T second)
+{
+    if ((step == (T)0.0) || ((first < second) && (step < (T)0.0)) ||
+        ((second < first) && (step > (T)0.0)))
+        return Matrix::makeMatrix(0, 0);
 
+    size_t size = static_cast<size_t>(((second - first) / step) + 1);
+    Matrix C{ Matrix::makeMatrix(1, size) };
+
+    for (size_t i{}; i < size; ++i) {
+        C.m_data[i] = first + i * step;
+    }
+ 
+    return C;
+}
 
 
 
@@ -458,7 +473,7 @@ std::pair<size_t, size_t> Matrix<T>::operator()(T val) const
             if (m_data[i + m_rows * j] == val)
                 return { i, j };
 
-    return { m_rows + 1, m_cols + 1 };
+    return { SIZE_MAX, SIZE_MAX };
 }
 
 

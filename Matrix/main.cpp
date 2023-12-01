@@ -48,14 +48,14 @@ int main() {
     auto E = Matrix<int>::makeMatrix(3, 2, move(dataE));
     auto F = Matrix<double>::makeMatrix(3, 1, 1.0);
 
-    auto K = Matrix<float>::makeLinSpace(1, PI, 1);
+    auto K = Matrix<float>::makeLinSpace(1, 5.0, 5);
     auto L = Matrix<double>::makeLinSpace(1, PI, 20);
-    auto M = Matrix<int>::makeLinSpace(1, PI, 20);
-    auto N = Matrix<int>::makeMatrix(1, 3, 4);
-    auto O = Matrix<int>::makeMatrix(1, 3, 5);
-  
+    auto M = Matrix<double>::makeLinInc(-1, -0.1, -2);
 
 
+    cout << M << "\n" << M.size().first << " " << M.size().second;
+    
+   
     return 0;
 }
 
