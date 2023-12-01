@@ -30,6 +30,12 @@ public:
         return Matrix(rows, cols, std::vector<T>(rows * cols, val));
     }
 
+    static Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T> il)
+    {
+        ;
+        return makeMatrix(rows, cols, std::vector<T>(il));
+    }
+
     static Matrix makeLinSpace(T begin, T end, size_t n);
     static Matrix makeLinInc(T begin, T interval, T end);
     

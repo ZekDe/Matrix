@@ -40,21 +40,23 @@ int main() {
      2, 3,
      3, 4};
 
-    auto A = Matrix<int>::makeMatrix(2, 9, move(dataA));
+    int a[] = { 1,2,3,4,5,6,7,8,9,
+               9,8,7,6,5,4,3,2,1 };
+
+    auto A = Matrix<int>::makeMatrix(2, 9, a);
 
     auto B = Matrix<float>::makeMatrix(3, 2, move(dataB));
     auto C = Matrix<double>::makeMatrix(2, 2);
     auto D = Matrix<double>::makeMatrix(3, 2, move(dataD));
     auto E = Matrix<int>::makeMatrix(3, 2, move(dataE));
     auto F = Matrix<double>::makeMatrix(3, 1, 1.0);
+    auto G = Matrix<float>::makeLinSpace(1, 5.0, 5);
+    auto H = Matrix<double>::makeLinInc(-1, -0.1, -2);
+    auto I = Matrix<double>::makeMatrix(2, 2, { 1,2,3,4 });
 
-    auto K = Matrix<float>::makeLinSpace(1, 5.0, 5);
-    auto L = Matrix<double>::makeLinSpace(1, PI, 20);
-    auto M = Matrix<double>::makeLinInc(-1, -0.1, -2);
+    cout << I;
 
 
-    cout << M << "\n" << M.size().first << " " << M.size().second;
-    
    
     return 0;
 }
