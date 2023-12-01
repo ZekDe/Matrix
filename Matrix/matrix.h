@@ -47,6 +47,8 @@ public:
     const T& operator()(size_t, size_t) const;
     T& operator()(size_t, size_t);
 
+    std::pair<size_t, size_t> operator()(T);
+
     template <typename U>
     Matrix& operator*=(U);
 
@@ -203,20 +205,22 @@ Matrix<std::common_type_t<U, T>> operator/(U scalar, Matrix<T> A)
 template<typename T, typename U>
 inline Matrix<std::common_type_t<U, T>> operator/(Matrix<T> A, Matrix<U> B)
 {
+    using namespace std;
+
     auto [Arows, Acols] = A.size();
     auto [Brows, Bcols] = B.size();
 
     if ((Arows != Brows) || (Acols != Bcols))
-        return Matrix<std::common_type_t<U, T>>::makeMatrix(0, 0); //todo: exception
+        return Matrix<common_type_t<U, T>>::makeMatrix(0, 0); //todo: exception
 
 
-    auto C = Matrix<std::common_type_t<U, T>>::makeMatrix(Arows, Acols);
+    auto C = Matrix<common_type_t<U, T>>::makeMatrix(Arows, Acols);
 
     for (int i{}; i < Arows; ++i)
         for (int j{}; j < Acols; ++j)
         {
             if(B(i, j) <= FLT_EPSILON)
-                return Matrix<std::common_type_t<U, T>>::makeMatrix(0, 0);//todo exception
+                return Matrix<common_type_t<U, T>>::makeMatrix(0, 0);//todo exception
             C(i, j) = A(i, j) / B(i, j);
         }
             
@@ -447,6 +451,16 @@ T& Matrix<T>::operator()(size_t row, size_t col)
     return m_data[row + m_rows * col];
 }
 
+template<typename T>
+std::pair<size_t, size_t> Matrix<T>::operator()(T val)
+{
+    for (size_t i{}; i < m_rows; ++i)
+        for (size_t j{}; j < m_cols; ++j)
+            if (m_data[i + m_rows * j] == val)
+                return { i, j };
+
+    return { m_rows + 1, m_cols + 1 };
+}
 
 
 
@@ -471,15 +485,17 @@ Matrix<T>& Matrix<T>::operator*=(U scalar)
 template <typename U, typename T> 
 Matrix<std::common_type_t<U, T>> operator*(Matrix<U> A, const Matrix<T>& B)
 {
-    std::common_type_t<U, T> val;
-    auto C = Matrix<std::common_type_t<U, T>>::makeMatrix(A.m_rows, B.m_cols);
+    using namespace std;
+
+    common_type_t<U, T> val;
+    auto C = Matrix<common_type_t<U, T>>::makeMatrix(A.m_rows, B.m_cols);
 
     if (A.m_cols != B.m_rows)
-        return Matrix<std::common_type_t<U, T>>::makeMatrix(0, 0); // todo: exception
+        return Matrix<common_type_t<U, T>>::makeMatrix(0, 0); // todo: exception
 
     for (size_t i = 0; i < A.m_rows; i++)
         for (size_t j = 0; j < B.m_cols; j++) {
-            val = (std::common_type_t<U, T>)0.0;
+            val = (common_type_t<U, T>)0.0;
             for (size_t k = 0; k < A.m_cols; k++)
                 val += A.m_data[i + A.m_rows * k] * B.m_data[k + B.m_rows * j];
 
@@ -528,5 +544,4 @@ void Matrix<T>::align(size_t row, size_t col, std::vector<T>& tvec)
             tvec[i + row * j] = localvec[k++];
 
 }
-
 

@@ -22,25 +22,25 @@ void printMatrix(const Matrix<T> &A)
 int main() {
   
     std::vector<int> dataA = 
-    {1,2,3,
-     3,2,1};
+    {1,2,3,4,5,6,7,8,9,
+     9,7,8,6,5,4,3,2,1};
 
     std::vector<float> dataB = 
     {8.1,5.2,
-     6.3,7.44,
+     6.3,7.444,
      8.5,9.6};
 
     std::vector<double> dataD =
-    {4.100001,5.2,
-     6.3,7.44,
-     8.5,9.6 };
+    {4.1,5.2,
+     9.6,7.44,
+     4.1,9.6 };
 
     std::vector<int> dataE =
     {1, 2,
      2, 3,
      3, 4};
 
-    auto A = Matrix<int>::makeMatrix(0, 0);
+    auto A = Matrix<int>::makeMatrix(2, 9, move(dataA));
     auto B = Matrix<float>::makeMatrix(3, 2, move(dataB));
     auto C = Matrix<double>::makeMatrix(2, 2);
     auto D = Matrix<double>::makeMatrix(3, 2, move(dataD));
@@ -53,8 +53,14 @@ int main() {
     auto N = Matrix<int>::makeMatrix(1, 3, 4);
     auto O = Matrix<int>::makeMatrix(1, 3, 5);
 
- 
+    auto [row, col] =B(7.444);
+
     
+    if (row > B.size().first)
+        cout << "argument not found\n";
+
+    cout << row << " " << col;
+
     return 0;
 }
 
