@@ -46,8 +46,7 @@ public:
 
     const T& operator()(size_t, size_t) const;
     T& operator()(size_t, size_t);
-
-    std::pair<size_t, size_t> operator()(T);
+    std::pair<size_t, size_t> operator()(T) const;
 
     template <typename U>
     Matrix& operator*=(U);
@@ -452,7 +451,7 @@ T& Matrix<T>::operator()(size_t row, size_t col)
 }
 
 template<typename T>
-std::pair<size_t, size_t> Matrix<T>::operator()(T val)
+std::pair<size_t, size_t> Matrix<T>::operator()(T val) const
 {
     for (size_t i{}; i < m_rows; ++i)
         for (size_t j{}; j < m_cols; ++j)
@@ -461,7 +460,6 @@ std::pair<size_t, size_t> Matrix<T>::operator()(T val)
 
     return { m_rows + 1, m_cols + 1 };
 }
-
 
 
 

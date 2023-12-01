@@ -41,6 +41,7 @@ int main() {
      3, 4};
 
     auto A = Matrix<int>::makeMatrix(2, 9, move(dataA));
+
     auto B = Matrix<float>::makeMatrix(3, 2, move(dataB));
     auto C = Matrix<double>::makeMatrix(2, 2);
     auto D = Matrix<double>::makeMatrix(3, 2, move(dataD));
@@ -52,14 +53,8 @@ int main() {
     auto M = Matrix<int>::makeLinSpace(1, PI, 20);
     auto N = Matrix<int>::makeMatrix(1, 3, 4);
     auto O = Matrix<int>::makeMatrix(1, 3, 5);
+  
 
-    auto [row, col] =B(7.444);
-
-    
-    if (row > B.size().first)
-        cout << "argument not found\n";
-
-    cout << row << " " << col;
 
     return 0;
 }
