@@ -11,8 +11,8 @@ template<typename T>
 void printMatrix(const Matrix<T> &A)
 {
     auto [rows, cols] = A.size();
-    for (int i{}; i < rows; ++i){
-        for (int j{}; j < cols; ++j)
+    for (size_t i{}; i < rows; ++i){
+        for (size_t j{}; j < cols; ++j)
             cout << A(i, j) << " ";
         cout << "\n";
     }

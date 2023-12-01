@@ -20,7 +20,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
 
         int line_length = 0;
 
-        for (int j{}; j < cols; ++j) {
+        for (size_t j{}; j < cols; ++j) {
             std::stringstream ss;
             ss << A(i, j);
             line_length += ss.str().length();
@@ -46,8 +46,8 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
     os << std::string(line_length_max, '-') << '\n';
    
 
-    for (int i{}; i < rows; i++){
-        for (int j{}; j < cols; j++)
+    for (size_t i{}; i < rows; i++){
+        for (size_t j{}; j < cols; j++)
             os << A(i,j) << " ";
 
         os << "\n";
