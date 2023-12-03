@@ -1,7 +1,7 @@
 #include "matrix.h"
 #include "iomatrix.h"
 #include <sstream>
-
+#include <chrono>
 
 
 
@@ -51,12 +51,18 @@ int main() {
     auto E = Matrix<int>::makeMatrix(3, 2, move(dataE));
     auto F = Matrix<double>::makeMatrix(3, 1, 1.0);
     auto G = Matrix<float>::makeLinSpace(1, 5.0, 5);
-    auto H = Matrix<double>::makeLinInc(-1, -0.1, -2);
+    auto H = Matrix<double>::makeLinInc(0, 0.000001, 3.14);
     auto I = Matrix<double>::makeMatrix(2, 2, { 1,2,3,4 });
+    auto RA = Matrix<int>::makeRandomMatrix(5, 5, -2, 2);
 
-    cout << I;
 
 
+    auto start = std::chrono::high_resolution_clock::now();
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> duration = end - start;
+    cout << duration.count();
+
+    cout << RA;
    
     return 0;
 }

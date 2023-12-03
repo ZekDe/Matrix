@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <cmath>
-
+#include <random>
 
 
 
@@ -32,8 +32,25 @@ public:
 
     static Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T> il)
     {
-        ;
         return makeMatrix(rows, cols, std::vector<T>(il));
+    }
+
+    static Matrix makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0)
+    {
+        std::mt19937 gen(std::random_device{}());
+
+        std::conditional_t<std::is_floating_point<T>::value, 
+            std::uniform_real_distribution<T>, 
+            std::uniform_int_distribution<T>> dis(min, max);
+
+        size_t size = rows * cols;
+        std::vector<T> vec(size);
+
+        for (size_t i{}; i < size; ++i)
+            vec[i] = static_cast<T>(dis(gen));
+
+        return makeMatrix(rows, cols, std::move(vec));
+
     }
 
     static Matrix makeLinSpace(T begin, T end, size_t n);

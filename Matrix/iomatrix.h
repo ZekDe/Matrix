@@ -21,7 +21,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
         int line_length = 0;
 
         for (size_t j{}; j < cols; ++j) {
-            std::stringstream ss;
+            std::ostringstream ss;
             ss << A(i, j);
             line_length += ss.str().length();
         }
@@ -31,8 +31,9 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
     // get max length of line
     line_length_max += (cols - 1);
 
-    std::stringstream ss;
+    std::ostringstream ss;
     ss << rows << cols;
+     
     int rows_x_cols_length = ss.str().length() + 1;
     rows_x_cols_length = std::abs(line_length_max - rows_x_cols_length);
     
