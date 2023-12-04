@@ -10,9 +10,11 @@ Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
 
 Matrix makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0);
 
+// linearly spaced vector generate n points between begin-end
 Matrix makeLinSpace(T begin, T end, size_t n);
 
-Matrix makeLinInc(T begin, T interval, T end);
+// linearly incremented vector generate a range by dt
+Matrix makeLinInc(T begin, T dt, T end);
 
 
 std::pair<size_t, size_t> size() const;
@@ -96,4 +98,62 @@ inline Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, U scalar);
 template<typename T, typename U>
 Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, const Matrix<U>& B);
 
+```
+
+### Example - Create Matrix
+```cpp
+float arr[] = 
+{ 1, 2, 4, -80,
+-5, 2, 0, -10,
+1, 10, 3, 20,
+1, 2, 2, 3 };
+
+auto A = Matrix<float>::makeMatrix(4, 4, arr);
+
+
+auto B = Matrix<int>::makeMatrix(4, 4, 
+{ 1,2,4,-80,
+-5,2,0,-10,
+1,10,3,20,
+1,2, 2,3 });
+
+auto C = Matrix<float>::makeMatrix(3, 2, std::vector<float>
+{8.1,5.2,
+6.3,7.444,
+8.5,9.6 });
+
+#define PI 3.1415926535
+auto D = Matrix<float>::makeLinSpace(-PI, +PI, 10);
+auto E = Matrix<float>::makeLinInc(-PI, 0.5, PI);
+auto F = Matrix<float>::makeRandomMatrix(3, 3);
+cout << E;
+
+
+```
+### Example - Matrix Operations
+```cpp
+cout << A * B;
+cout << A / B;
+A+=B;
+cout << A;
+A -=B;
+cout << (A + B);
+cout << 2 - A + 2;
+cout << 2 / A / 2;
+A++;
+++A;
+A--;
+--A;
+// ...
+
+cout << A;
+A(1, 2) = 2;
+cout << A << A(1,2);
+
+auto[row, col] = A(10); // find 10 in A
+cout << "A(" << row << "," << col << ")";
+
+auto [rows, cols] = A.size();
+
+cout << det(A);
 ```

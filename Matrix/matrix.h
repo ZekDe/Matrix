@@ -159,52 +159,27 @@ namespace MathLab
         if (n == 1)
             return C;
 
+        double step = (end - begin) / (double)(n - 1);
 
-        if ((begin == -end) && (n > 2))
-        {
-            for (size_t i{ 2 }; i <= n; ++i)
-                C.m_data[i - 1] = static_cast<T>(end * ((double)(((i << 1) - n) - 1) / ((double)n - 1.0)));
+        for (int i = 0; i < n; ++i)
+            C.m_data[i] = begin + i * step;
 
-            if ((n & 1) == 1)
-            {
-                C.m_data[n >> 1] = (T)0.0;
-            }
-        }
-        else if ((begin < (T)0.0) != (end < (T)0.0))
-        {
-            size_t val = C.m_cols - 1;
-            double delta1 = begin / static_cast<double>(val);
-            double delta2 = end / static_cast<double>(val);
-
-            val = C.m_cols - 3;
-            for (size_t i{}; i <= val; ++i)
-                C.m_data[i + 1] = static_cast<T>((begin + delta2 * (static_cast<double>(i) + 1.0)) - delta1 * (static_cast<double>(i) + 1.0));
-        }
-        else
-        {
-            size_t val = C.m_cols - 1;
-            double delta1 = (end - begin) / static_cast<double>(val);
-
-            val = C.m_cols - 3;
-            for (size_t i{}; i <= val; ++i)
-                C.m_data[i + 1] = static_cast<T>(begin + (static_cast<double>(i) + 1.0) * delta1);
-        }
 
         return C;
     }
 
     template<typename T>
-    Matrix<T> Matrix<T>::makeLinInc(T first, T step, T second)
+    Matrix<T> Matrix<T>::makeLinInc(T first, T dt, T second)
     {
-        if ((step == (T)0.0) || ((first < second) && (step < (T)0.0)) ||
-            ((second < first) && (step > (T)0.0)))
+        if ((dt == (T)0.0) || ((first < second) && (dt < (T)0.0)) ||
+            ((second < first) && (dt > (T)0.0)))
             return Matrix::makeMatrix(0, 0);
 
-        size_t size = static_cast<size_t>(((second - first) / step) + 1);
+        size_t size = static_cast<size_t>(((second - first) / dt) + 1);
         Matrix C{ Matrix::makeMatrix(1, size) };
 
         for (size_t i{}; i < size; ++i) {
-            C.m_data[i] = first + i * step;
+            C.m_data[i] = first + i * dt;
         }
 
         return C;
@@ -263,7 +238,7 @@ namespace MathLab
         for (int i{}; i < Arows; ++i)
             for (int j{}; j < Acols; ++j)
             {
-                if (B(i, j) <= FLT_EPSILON)
+                if (std::abs(B(i, j)) <= FLT_EPSILON)
                     return Matrix<common_type_t<U, T>>::makeMatrix(0, 0);//todo exception
                 C(i, j) = A(i, j) / B(i, j);
             }
