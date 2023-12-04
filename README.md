@@ -1,6 +1,6 @@
 # Matrix<T>
 
-- public static member functions -
+----- public static member functions -----
 Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec);
 Matrix makeMatrix(size_t rows, size_t cols, const T* data);
 Matrix makeMatrix(size_t rows, size_t cols, T val = 0);
@@ -9,7 +9,7 @@ Matrix makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0
 Matrix makeLinSpace(T begin, T end, size_t n);
 Matrix makeLinInc(T begin, T interval, T end);
 
-- public functions -
+----- public functions -----
 
 std::pair<size_t, size_t> size() const;
 const T& operator()(size_t, size_t) const;
