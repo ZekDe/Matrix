@@ -273,11 +273,6 @@ namespace MathLab
     }
 
 
-
-
-
-
-
     template<typename T>
     Matrix<T>& Matrix<T>::operator++()
     {
@@ -331,7 +326,6 @@ namespace MathLab
     }
 
 
-
     template<typename T>
     template<typename U>
     Matrix<T>& Matrix<T>::operator+=(U scalar)
@@ -341,7 +335,6 @@ namespace MathLab
             m_data[i] += scalar;
         return *this;
     }
-
 
 
     template<typename T, typename U>
@@ -368,15 +361,10 @@ namespace MathLab
 
 
     template<typename T>
-    inline Matrix<T> Matrix<T>::operator+() const
+    Matrix<T> Matrix<T>::operator+() const
     {
         return *this;
     }
-
-
-
-
-
 
 
 
@@ -416,7 +404,7 @@ namespace MathLab
     }
 
     template<typename T>
-    inline Matrix<T> Matrix<T>::operator-() const
+    Matrix<T> Matrix<T>::operator-() const
     {
         std::vector<T> vec(m_rows * m_cols);
 
@@ -548,7 +536,7 @@ namespace MathLab
 
 
     template <typename T, typename U>
-    inline Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>& A, U scalar)
+    Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>& A, U scalar)
     {
 
         size_t size = A.m_rows * A.m_cols;

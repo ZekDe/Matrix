@@ -1,7 +1,5 @@
-# Matrix<T>
-
-* public static member functions
-
+### Member Functions
+```cpp
 Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec);
 
 Matrix makeMatrix(size_t rows, size_t cols, const T* data);
@@ -29,10 +27,8 @@ std::pair<size_t, size_t> operator()(T) const;
 template <typename U>
 Matrix& operator*=(U);
 
-
 template<typename U>
 Matrix& operator/=(U);
-
 
 template<typename U>
 Matrix& operator+=(const Matrix<U>&);
@@ -54,9 +50,9 @@ Matrix operator++(int);
 
 Matrix& operator--();
 Matrix operator--(int);
-
-* friends
-
+```
+### Friends
+```cpp
 friend class Matrix;
 
 template <typename U, typename T>
@@ -67,23 +63,37 @@ friend Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>&, U);
 
 template<typename T, typename U>
 friend Matrix<std::common_type_t<U, T>> operator/(U, const Matrix<T>&);
+```
+### Non-Members
+```cpp
+template<typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator+(const Matrix<T>& A, U scalar);
 
-Example 1 - Matrix Creation
+template<typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator+(U scalar, const Matrix<T>& A);
 
+template <typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator+(const Matrix<T>& A, const Matrix<U>& B);
 
-auto A = Matrix<int>::makeMatrix(4, 4, { 1,2,4,-80,
-                                        -5,2,0,-10,
-                                         1,10,3,20,
-                                         1,2, 2,3 });
-	
-auto B = Matrix<float>::makeMatrix(3, 2, std::vector<float>
-										{8.1,5.2,
-										 6.3,7.444,
-										 8.5,9.6 });
-		 
-float arr[] = { 1, 2, 4, -80,
-               -5, 2, 0, -10,
-                1, 10, 3, 20,
-                1, 2, 2, 3, };
+template<typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator-(Matrix<T> A, U scalar);
 
-auto C = Matrix<float>::makeMatrix(4, 4, arr);		 
+template<typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator-(U scalar, Matrix<T> A);
+
+template <typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator-(Matrix<T> A, const Matrix<U>& B);
+
+template <typename T>
+bool operator==(const Matrix<T>& A, const Matrix<T>& B);
+
+template <typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator*(U scalar, const Matrix<T>& A);
+
+template<typename T, typename U>
+inline Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, U scalar);
+
+template<typename T, typename U>
+Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, const Matrix<U>& B);
+
+```
