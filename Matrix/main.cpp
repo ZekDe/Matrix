@@ -24,6 +24,12 @@ void printMatrix(const Matrix<T> &A)
 
 int main() 
 {
+    float arr[] = { 1, 2, 4, -80,
+                    -5, 2, 0, -10,
+                     1, 10, 3, 20,
+                     1, 2, 2, 3 };
+
+    auto C = Matrix<float>::makeMatrix(4, 4, arr);
   
 
     auto A = Matrix<int>::makeMatrix(4, 4, { 1,2,4,-80,
@@ -36,18 +42,9 @@ int main()
          6.3,7.444,
          8.5,9.6 });
 
-    auto C = Matrix<double>::makeMatrix(3, 2, std::vector<double>
-        {4.1, 5.2,
-         9.6, 7.44,
-         4.1, 9.6 });
-
-    auto D = Matrix<int>::makeMatrix(3, 2, std::vector<int>
-        {1, 2,
-         2, 3,
-         3, 4});
 
 
-    cout << det(A);
+    cout << C;
 
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();

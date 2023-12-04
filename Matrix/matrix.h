@@ -31,7 +31,7 @@ namespace MathLab
             return Matrix(rows, cols, std::vector<T>(rows * cols, val));
         }
 
-        static Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T> il)
+        static Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il)
         {
             return makeMatrix(rows, cols, std::vector<T>(il));
         }
