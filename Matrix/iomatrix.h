@@ -5,7 +5,7 @@
 #include <sstream>
 
 template <typename U>
-std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter 
+std::ostream& operator<<(std::ostream& os, const MathLab::Matrix<U>& A) // inserter 
 {
     auto [rows, cols] = A.size();
 
@@ -60,7 +60,7 @@ std::ostream& operator<<(std::ostream& os, const Matrix<U>& A) // inserter
 }
 
 template <typename U>
-std::istream& operator>>(std::istream& is, Matrix<U>& A) // extractor
+std::istream& operator>>(std::istream& is, MathLab::Matrix<U>& A) // extractor
 {
     auto [rows, cols] = A.size();
 
