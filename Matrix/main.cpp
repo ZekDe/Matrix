@@ -26,9 +26,10 @@ int main()
 {
   
 
-    auto A = Matrix<int>::makeMatrix(2, 9, std::vector<int>
-        {2, 3, 3, 4, 5, 6, 7, 8, 9,
-         8, 7, 8, 6, 5, 4, 3, 2, 1});
+    auto A = Matrix<int>::makeMatrix(4, 4, { 1,2,4,-80,
+                                               -5,2,0,-10,
+                                                1,10,3,20,
+                                                1,2, 2,3 });
 
     auto B = Matrix<float>::makeMatrix(3, 2, std::vector<float>
         {8.1,5.2,
@@ -46,13 +47,14 @@ int main()
          3, 4});
 
 
-    cout << B;
+    cout << det(A);
 
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
-    cout << duration.count();
+    //cout << duration.count();
     
+
 
     return 0;
 }
