@@ -14,9 +14,9 @@ Matrix makeLinSpace(T begin, T end, size_t n);
 
 Matrix makeLinInc(T begin, T interval, T end);
 
-* public functions
 
 std::pair<size_t, size_t> size() const;
+
 
 const T& operator()(size_t, size_t) const;
 
