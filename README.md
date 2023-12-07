@@ -1,4 +1,7 @@
 ### Member Functions
+
+namespace MathLab
+
 ```cpp
 Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec);
 
@@ -126,7 +129,7 @@ auto C = Matrix<float>::makeMatrix(3, 2, std::vector<float>
 auto D = Matrix<float>::makeLinSpace(-PI, +PI, 10);
 auto E = Matrix<float>::makeLinInc(-PI, 0.5, PI);
 auto F = Matrix<float>::makeRandomMatrix(3, 3);
-cout << E;
+auto I = Matrix<float>::makeEyeMatrix(3, 3);
 
 
 ```
@@ -156,4 +159,5 @@ cout << "A(" << row << "," << col << ")";
 auto [rows, cols] = A.size();
 
 cout << det(A);
+cout << inv(A);
 ```

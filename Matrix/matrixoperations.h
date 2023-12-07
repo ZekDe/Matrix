@@ -30,7 +30,6 @@ namespace MathLab
                 if (std::abs(C(j, i)) > std::abs(C(pivot_row, i)))
                     pivot_row = j;
 
- 
             if (pivot_row != i) {
                 swapRows(C, i, pivot_row);
                 std::swap(P[i], P[pivot_row]);
@@ -59,6 +58,44 @@ namespace MathLab
         return det * sign;
     }
 
+    template<typename T>
+    inline Matrix<double> inv(const Matrix<T>& A)
+    {
+        auto [rows, cols] = A.size();
 
+        if (rows != cols)
+            return Matrix<double>::makeMatrix(0, 0); //todo: exception runtime_error("Square Matrix needed.");
+
+        auto I{ Matrix<double>::makeEyeMatrix(rows, cols) };
+        auto C{ Matrix<double>(A) };
+
+        // Gauss-Jordan 
+        for (int i{}; i < rows; ++i) {
+            
+            if (C(i,i) == 0.0)
+                return Matrix<double>::makeMatrix(0, 0); // todo:exception throw runtime_error("Zero pivot.");
+
+            // make diagonal element to 1
+            double pivot = C(i,i);
+            for (int j = 0; j < cols; ++j) {
+                C(i,j) /= pivot;
+                I(i,j) /= pivot;
+            }
+
+            // make 0 the elements in other rows
+            for (int k{}; k < rows; ++k) {
+                if (k != i) {
+                    double factor = C(k, i);
+                    for (int j = 0; j < cols; ++j) {
+                        C(k,j) -= factor * C(i,j);
+                        I(k, j) -= factor * I(i, j);
+                    }
+                }
+            }
+        }
+
+        return I;
+
+    }
 
 }

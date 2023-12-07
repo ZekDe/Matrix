@@ -54,6 +54,14 @@ namespace MathLab
 
         }
 
+        static Matrix makeEyeMatrix(size_t rows, size_t cols)
+        {
+            std::vector<T> vec(rows * cols);
+            for (size_t i{}; i < rows; ++i)
+                vec[i + rows * i] = (T)1.0;
+            return Matrix(rows, cols, std::move(vec));
+        }
+
         static Matrix makeLinSpace(T begin, T end, size_t n);
         static Matrix makeLinInc(T begin, T interval, T end);
 
@@ -539,9 +547,7 @@ namespace MathLab
     template <typename T>
     void Matrix<T>::align(size_t row, size_t col, std::vector<T>& tvec)
     {
-        auto localvec{ std::vector<T>(row * col) };
-
-        localvec = tvec;
+        auto localvec{ tvec };
 
         for (size_t i{}, k{}; i < row; ++i)
             for (size_t j{}; j < col; ++j)

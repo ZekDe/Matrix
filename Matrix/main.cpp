@@ -37,17 +37,15 @@ int main()
                                                 1,10,3,20,
                                                 1,2, 2,3 });
 
-    auto C = Matrix<float>::makeMatrix(3, 2, std::vector<float>
-        {8.1,5.2,
-         6.3,7.444,
-         8.5,9.6 });
+    auto C = Matrix<float>::makeMatrix(3, 3, std::vector<float>
+        {1,2,3,4,5,6,7,8,9});
 
+    auto D = Matrix<float>::makeMatrix(2, 2, {1,2, 2,4});
+    auto I = Matrix<float>::makeEyeMatrix(3, 3);
+    cout << inv(D);
 
-    auto D = Matrix<float>::makeRandomMatrix(1, 3);
-    auto E = Matrix<float>::makeRandomMatrix(3, 1);
   
-    auto[row, col] = A(10);
-    cout << "A(" << row << "," << col << ")";
+    
 
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
