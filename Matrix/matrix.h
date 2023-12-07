@@ -64,6 +64,11 @@ namespace MathLab
             return Matrix(rows, cols, std::move(vec));
         }
 
+        static Matrix makeEyeMatrix(size_t n)
+        {
+            return makeEyeMatrix(n, n);
+        }
+
         static Matrix makeLinSpace(T begin, T end, size_t n);
         static Matrix makeLinInc(T begin, T interval, T end);
 

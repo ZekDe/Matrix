@@ -14,6 +14,7 @@ Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
 Matrix makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0);
 
 static Matrix makeEyeMatrix(size_t rows, size_t cols);
+static Matrix makeEyeMatrix(size_t n); 
 
 // linearly spaced vector generate n points between begin-end
 Matrix makeLinSpace(T begin, T end, size_t n);
@@ -132,6 +133,7 @@ auto D = Matrix<float>::makeLinSpace(-PI, +PI, 10);
 auto E = Matrix<float>::makeLinInc(-PI, 0.5, PI);
 auto F = Matrix<float>::makeRandomMatrix(3, 3);
 auto I = Matrix<float>::makeEyeMatrix(3, 3);
+auto I1 = Matrix<float>::makeEyeMatrix(4);
 
 
 ```
