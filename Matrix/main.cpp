@@ -41,8 +41,8 @@ int main()
         {1,2,3,4,5,6,7,8,9});
 
     auto D = Matrix<float>::makeMatrix(2, 2, {1,2, 2,4});
-    auto I = Matrix<float>::makeEyeMatrix(3, 3);
-    cout << inv(D);
+    auto I = Matrix<float>::makeEyeMatrix(2, 3);
+    cout << I;
 
   
     

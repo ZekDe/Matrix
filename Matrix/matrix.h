@@ -57,8 +57,10 @@ namespace MathLab
         static Matrix makeEyeMatrix(size_t rows, size_t cols)
         {
             std::vector<T> vec(rows * cols);
-            for (size_t i{}; i < rows; ++i)
+            auto x = rows < cols ? rows : cols;
+            for (size_t i{}; i < x; ++i)
                 vec[i + rows * i] = (T)1.0;
+
             return Matrix(rows, cols, std::move(vec));
         }
 
