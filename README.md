@@ -13,6 +13,8 @@ Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
 
 Matrix makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0);
 
+static Matrix makeEyeMatrix(size_t rows, size_t cols);
+
 // linearly spaced vector generate n points between begin-end
 Matrix makeLinSpace(T begin, T end, size_t n);
 
