@@ -164,4 +164,5 @@ auto [rows, cols] = A.size();
 
 cout << det(A);
 cout << inv(A);
+cout << transpose(A);
 ```

@@ -24,12 +24,12 @@ void printMatrix(const Matrix<T> &A)
 
 int main() 
 {
-    float arr[] = { 1, 2, 4, -80,
-                    -5, 2, 1, -10,
-                     1, 10, 3, 20,
-                     1, 2, 2, 3 };
+    float arr[] = { 1, 2, 4,
+                    -5, 2, 1,
+                     1, 10, 3,
+                     };
 
-    auto A = Matrix<float>::makeMatrix(4, 4, arr);
+    auto A = Matrix<float>::makeMatrix(3, 3, arr);
   
 
     auto B = Matrix<int>::makeMatrix(4, 4, { 1,2,4,-80,
@@ -40,9 +40,10 @@ int main()
     auto C = Matrix<float>::makeMatrix(3, 3, std::vector<float>
         {1,2,3,4,5,6,7,8,9});
 
-    auto D = Matrix<float>::makeMatrix(2, 2, {1,2, 2,4});
+    auto D = Matrix<float>::makeMatrix(3, 3, {1,2,3, 3,4,5, 6,7,8});
     auto I = Matrix<float>::makeEyeMatrix(4);
-    cout << I;
+    auto J = Matrix<float>::makeMatrix(3, 3, {1,2,0, 2,5,-1, 4,10,-1});
+    cout << J << eig(J);
 
   
     
