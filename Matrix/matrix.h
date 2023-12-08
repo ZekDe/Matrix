@@ -7,7 +7,7 @@
 namespace MathLab
 {
     template <typename T>
-    class Matrix
+    class Matrix : std::vector<T>
     {
     public:
         static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec)
@@ -120,9 +120,6 @@ namespace MathLab
         // friends
         friend class Matrix;
 
-        //template <typename T>
-        //friend class MatrixOperations;
-
         template <typename U, typename T>
         friend Matrix<std::common_type_t<U, T>> operator*(const Matrix<U>& A, const Matrix<T>& B);
 
@@ -132,15 +129,12 @@ namespace MathLab
         template<typename T, typename U>
         friend Matrix<std::common_type_t<U, T>> operator/(U, const Matrix<T>&);
 
-  /*      template<typename T>
-        friend Matrix<T> det(Matrix<T>);*/
-
 
     private:
         Matrix(size_t rows, size_t cols, std::vector<T> &&tvec = std::vector<T>()) :
             m_rows(rows), m_cols(cols), m_data(move(tvec))
         {}
-        
+
 
         static void align(size_t, size_t, std::vector<T>&);
 

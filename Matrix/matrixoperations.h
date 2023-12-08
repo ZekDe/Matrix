@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "matrix.h"
 
 namespace MathLab
@@ -117,5 +117,6 @@ namespace MathLab
 
         return C;
     }
+
 
 }
