@@ -5,8 +5,6 @@ namespace MathLab
 ```cpp
 Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec);
 
-Matrix makeMatrix(size_t rows, size_t cols, const T* data);
-
 Matrix makeMatrix(size_t rows, size_t cols, T val = 0);
 
 Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
@@ -24,7 +22,7 @@ Matrix makeLinInc(T begin, T dt, T end);
 
 
 std::pair<size_t, size_t> size() const;
-
+void setSize(size_t rows, size_t cols);
 
 const T& operator()(size_t, size_t) const;
 
@@ -108,20 +106,14 @@ Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, const Matrix<U>& 
 
 ### Example - Create Matrix
 ```cpp
-float arr[] = 
-{ 1, 2, 4, -80,
--5, 2, 0, -10,
-1, 10, 3, 20,
-1, 2, 2, 3 };
-
-auto A = Matrix<float>::makeMatrix(4, 4, arr);
-
 
 auto B = Matrix<int>::makeMatrix(4, 4, 
 { 1,2,4,-80,
 -5,2,0,-10,
 1,10,3,20,
 1,2, 2,3 });
+
+B.setSize(9, 8);
 
 auto C = Matrix<float>::makeMatrix(3, 2, std::vector<float>
 {8.1,5.2,
@@ -165,4 +157,6 @@ auto [rows, cols] = A.size();
 cout << det(A);
 cout << inv(A);
 cout << transpose(A);
+
+
 ```
