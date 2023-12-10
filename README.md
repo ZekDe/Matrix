@@ -107,9 +107,9 @@ Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, const Matrix<U>& 
 ### Example - Exceptions
 Same as vector class. Calls to Allocator::allocate may throw. 
 ```cpp
-Matrix<T> makeMatrix(size_t rows, size_t cols, T val = 0);
-Matrix<T> makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
-Matrix<T> makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0);
+static Matrix<T> makeMatrix(size_t rows, size_t cols, T val = 0);
+static Matrix<T> makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
+static Matrix<T> makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0);
 static Matrix<T> makeEyeMatrix(size_t rows, size_t cols);
 static Matrix<T> makeEyeMatrix(size_t n); 
 
