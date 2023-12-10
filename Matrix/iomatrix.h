@@ -15,10 +15,10 @@ std::ostream& operator<<(std::ostream& os, const MathLab::Matrix<U>& A) // inser
     }
         
 
-    int line_length_max = 0;
-    for (int i{}; i < rows; ++i){
+    size_t line_length_max = 0;
+    for (size_t i{}; i < rows; ++i){
 
-        int line_length = 0;
+        size_t line_length = 0;
 
         for (size_t j{}; j < cols; ++j) {
             std::ostringstream ss;
@@ -34,8 +34,8 @@ std::ostream& operator<<(std::ostream& os, const MathLab::Matrix<U>& A) // inser
     std::ostringstream ss;
     ss << rows << cols;
      
-    int rows_x_cols_length = ss.str().length() + 1;
-    rows_x_cols_length = std::abs(line_length_max - rows_x_cols_length);
+    size_t rows_x_cols_length = ss.str().length() + 1;
+    rows_x_cols_length = std::abs((int)line_length_max - (int)rows_x_cols_length);
     
     os << std::string(line_length_max, '-') << '\n';
 

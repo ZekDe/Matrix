@@ -3,22 +3,22 @@
 namespace MathLab
 
 ```cpp
-Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec);
+Matrix<T> makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec);
 
-Matrix makeMatrix(size_t rows, size_t cols, T val = 0);
+Matrix<T> makeMatrix(size_t rows, size_t cols, T val = 0);
 
-Matrix makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
+Matrix<T> makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
 
-Matrix makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0);
+Matrix<T> makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0);
 
-static Matrix makeEyeMatrix(size_t rows, size_t cols);
-static Matrix makeEyeMatrix(size_t n); 
+static Matrix<T> makeEyeMatrix(size_t rows, size_t cols);
+static Matrix<T> makeEyeMatrix(size_t n); 
 
 // linearly spaced vector generate n points between begin-end
-Matrix makeLinSpace(T begin, T end, size_t n);
+Matrix<T> makeLinSpace(T begin, T end, size_t n);
 
 // linearly incremented vector generate a range by dt
-Matrix makeLinInc(T begin, T dt, T end);
+Matrix<T> makeLinInc(T begin, T dt, T end);
 
 
 std::pair<size_t, size_t> size() const;
@@ -31,31 +31,31 @@ T& operator()(size_t, size_t);
 std::pair<size_t, size_t> operator()(T) const;
 
 template <typename U>
-Matrix& operator*=(U);
+Matrix<T>& operator*=(U);
 
 template<typename U>
-Matrix& operator/=(U);
+Matrix<T>& operator/=(U);
 
 template<typename U>
-Matrix& operator+=(const Matrix<U>&);
+Matrix<T>& operator+=(const Matrix<U>&);
 
 template<typename U>
-Matrix& operator+=(U);
+Matrix<T>& operator+=(U);
 
 template<typename U>
-Matrix& operator-=(const Matrix<U>&);
+Matrix<T>& operator-=(const Matrix<U>&);
 
 template<typename U>
-Matrix& operator-=(U);
+Matrix<T>& operator-=(U);
 
-Matrix operator-() const;
-Matrix operator+() const;
+Matrix<T> operator-() const;
+Matrix<T> operator+() const;
 
-Matrix& operator++();
-Matrix operator++(int);
+Matrix<T>& operator++();
+Matrix<T> operator++(int);
 
-Matrix& operator--();
-Matrix operator--(int);
+Matrix<T>& operator--();
+Matrix<T> operator--(int);
 ```
 ### Friends
 ```cpp
@@ -102,6 +102,33 @@ inline Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, U scalar);
 template<typename T, typename U>
 Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, const Matrix<U>& B);
 
+```
+
+### Example - Exceptions
+Same as vector class. Calls to Allocator::allocate may throw. 
+```cpp
+Matrix<T> makeMatrix(size_t rows, size_t cols, T val = 0);
+Matrix<T> makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
+Matrix<T> makeRandomMatrix(size_t rows, size_t cols, T min = (T)0.0, T max = (T)1.0);
+static Matrix<T> makeEyeMatrix(size_t rows, size_t cols);
+static Matrix<T> makeEyeMatrix(size_t n); 
+
+Matrix<std::common_type_t<U, T>> operator/(U scalar, const Matrix<T>& A);
+Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, U scalar);
+Matrix<std::common_type_t<U, T>> operator/(const Matrix<T>& A, const Matrix<U>& B);
+Matrix<std::common_type_t<U, T>> operator+(const Matrix<T>& A, U scalar);
+Matrix<std::common_type_t<U, T>> operator+(U scalar, const Matrix<T>& A);
+Matrix<std::common_type_t<U, T>> operator+(const Matrix<T>& A, const Matrix<U>& B);
+Matrix<T> Matrix<T>::operator+() const;
+Matrix<T> operator++(int);
+Matrix operator--(int);
+Matrix<std::common_type_t<U, T>> operator-(Matrix<T> A, U scalar);
+Matrix<T>::operator-() const;
+Matrix<T>::setSize(size_t rows, size_t cols);
+Matrix<T>::operator Matrix<U>() const;
+Matrix<std::common_type_t<U, T>> operator*(const Matrix<U>& A, const Matrix<T>& B);
+Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>& A, U scalar);
+Matrix<std::common_type_t<U, T>> operator*(U scalar, const Matrix<T>& A);
 ```
 
 ### Example - Create Matrix

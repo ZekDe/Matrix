@@ -43,7 +43,7 @@ namespace MathLab
             return Matrix(rows, cols, std::move(vec));
         }
 
-        static Matrix makeEyeMatrix(size_t rows, size_t cols)
+        static Matrix makeEyeMatrix(size_t rows, size_t cols) 
         {
             std::vector<T> vec(rows * cols);
             auto x = rows < cols ? rows : cols;
@@ -61,7 +61,7 @@ namespace MathLab
         static Matrix makeLinSpace(T begin, T end, size_t n);
         static Matrix makeLinInc(T begin, T interval, T end);
 
-        std::pair<size_t, size_t> size() const;
+        std::pair<size_t, size_t> size() const noexcept;
 
         void setSize(size_t rows, size_t cols);
 
@@ -69,39 +69,39 @@ namespace MathLab
         template<typename U>
         explicit operator Matrix<U>() const;
 
-        explicit operator bool() const;
+        explicit operator bool() const noexcept;
 
-        const T& operator()(size_t, size_t) const;
-        T& operator()(size_t, size_t);
-        std::pair<size_t, size_t> operator()(T) const;
+        const T& operator()(size_t, size_t) const noexcept;
+        T& operator()(size_t, size_t) noexcept;
+        std::pair<size_t, size_t> operator()(T) const noexcept;
 
         template <typename U>
-        Matrix& operator*=(U);
+        Matrix& operator*=(U) noexcept;
 
 
         template<typename U>
-        Matrix& operator/=(U);
+        Matrix& operator/=(U) noexcept;
 
 
         template<typename U>
-        Matrix& operator+=(const Matrix<U>&);
+        Matrix& operator+=(const Matrix<U>&) noexcept;
 
         template<typename U>
-        Matrix& operator+=(U);
+        Matrix& operator+=(U) noexcept;
 
         template<typename U>
-        Matrix& operator-=(const Matrix<U>&);
+        Matrix& operator-=(const Matrix<U>&) noexcept;
 
         template<typename U>
-        Matrix& operator-=(U);
+        Matrix& operator-=(U) noexcept;
 
         Matrix operator-() const;
         Matrix operator+() const;
 
-        Matrix& operator++();
+        Matrix& operator++() noexcept;
         Matrix operator++(int);
 
-        Matrix& operator--();
+        Matrix& operator--() noexcept;
         Matrix operator--(int);
 
 
@@ -117,11 +117,11 @@ namespace MathLab
         template<typename T, typename U>
         friend Matrix<std::common_type_t<U, T>> operator/(U, const Matrix<T>&);
 
-
     private:
         Matrix(size_t rows, size_t cols, std::vector<T> &&tvec = std::vector<T>()) :
             m_rows(rows), m_cols(cols), m_data(move(tvec))
         {}
+
 
 
         static void align(size_t, size_t, std::vector<T>&);
@@ -190,7 +190,7 @@ namespace MathLab
 
     template<typename T>
     template<typename U>
-    Matrix<T>& Matrix<T>::operator/=(U scalar)
+    Matrix<T>& Matrix<T>::operator/=(U scalar) noexcept
     {
         size_t size = m_rows * m_cols;
         for (size_t i{}; i < size; ++i)
@@ -248,7 +248,7 @@ namespace MathLab
 
 
     template<typename T>
-    Matrix<T>& Matrix<T>::operator++()
+    Matrix<T>& Matrix<T>::operator++() noexcept
     {
         *this += 1;
         return *this;
@@ -257,13 +257,12 @@ namespace MathLab
     template<typename T>
     Matrix<T> Matrix<T>::operator++(int)
     {
-        auto C = Matrix(m_rows, m_cols, this->m_data);
         *this += 1;
-        return C;
+        return *this - 1;
     }
 
     template<typename T>
-    Matrix<T>& Matrix<T>::operator--()
+    Matrix<T>& Matrix<T>::operator--() noexcept
     {
         *this -= 1;
         return *this;
@@ -272,9 +271,8 @@ namespace MathLab
     template<typename T>
     Matrix<T> Matrix<T>::operator--(int)
     {
-        auto C = Matrix(m_rows, m_cols, this->m_data);
         *this -= 1;
-        return C;
+        return *this + 1;
     }
 
 
@@ -285,7 +283,7 @@ namespace MathLab
 
     template<typename T>
     template<typename U>
-    Matrix<T>& Matrix<T>::operator+=(const Matrix<U>& A)
+    Matrix<T>& Matrix<T>::operator+=(const Matrix<U>& A) noexcept
     {
         auto [Arows, Acols] = A.size();
         size_t size = m_rows * m_cols;
@@ -305,7 +303,7 @@ namespace MathLab
 
     template<typename T>
     template<typename U>
-    Matrix<T>& Matrix<T>::operator+=(U scalar)
+    Matrix<T>& Matrix<T>::operator+=(U scalar) noexcept
     {
         size_t size = m_rows * m_cols;
         for (size_t i{}; i < size; ++i)
@@ -347,14 +345,14 @@ namespace MathLab
 
     template<typename T>
     template<typename U>
-    Matrix<T>& Matrix<T>::operator-=(const Matrix<U>& A)
+    Matrix<T>& Matrix<T>::operator-=(const Matrix<U>& A) noexcept
     {
         return *this += -A;
     }
 
     template<typename T>
     template<typename U>
-    Matrix<T>& Matrix<T>::operator-=(U scalar)
+    Matrix<T>& Matrix<T>::operator-=(U scalar) noexcept
     {
         return *this += -scalar;
     }
@@ -395,7 +393,7 @@ namespace MathLab
 
 
     template <typename T>
-    inline bool operator==(const Matrix<T>& A, const Matrix<T>& B)
+    inline bool operator==(const Matrix<T>& A, const Matrix<T>& B) noexcept
     {
         auto [Arows, Acols] = A.size();
         auto [Brows, Bcols] = B.size();
@@ -416,7 +414,7 @@ namespace MathLab
 
 
     template <typename T>
-    std::pair<size_t, size_t> Matrix<T>::size() const
+    std::pair<size_t, size_t> Matrix<T>::size() const noexcept
     {
         return { m_rows, m_cols };
     }
@@ -448,7 +446,7 @@ namespace MathLab
     }
 
     template<typename T>
-    Matrix<T>::operator bool() const
+    Matrix<T>::operator bool() const noexcept
     {
         auto size{ m_rows * m_cols };
 
@@ -460,7 +458,7 @@ namespace MathLab
     }
 
     template<typename T>
-    const T& Matrix<T>::operator()(size_t row, size_t col) const
+    const T& Matrix<T>::operator()(size_t row, size_t col) const noexcept
     {
         return m_data[row + m_rows * col];
     }
@@ -468,13 +466,13 @@ namespace MathLab
 
 
     template<typename T>
-    T& Matrix<T>::operator()(size_t row, size_t col)
+    T& Matrix<T>::operator()(size_t row, size_t col) noexcept
     {
         return m_data[row + m_rows * col];
     }
 
     template<typename T>
-    std::pair<size_t, size_t> Matrix<T>::operator()(T val) const
+    std::pair<size_t, size_t> Matrix<T>::operator()(T val) const noexcept
     {
         for (size_t i{}; i < m_rows; ++i)
             for (size_t j{}; j < m_cols; ++j)
@@ -495,9 +493,13 @@ namespace MathLab
 
     template<typename T>
     template<typename U>
-    Matrix<T>& Matrix<T>::operator*=(U scalar)
+    Matrix<T>& Matrix<T>::operator*=(U scalar) noexcept
     {
-        *this = *this * (T)scalar;
+        size_t size = m_rows * m_cols;
+ 
+        for (size_t i = 0; i < size; ++i) 
+            m_data[i] *= scalar;
+ 
         return *this;
     }
 
@@ -530,14 +532,7 @@ namespace MathLab
     template <typename T, typename U>
     Matrix<std::common_type_t<U, T>> operator*(const Matrix<T>& A, U scalar)
     {
-
-        size_t size = A.m_rows * A.m_cols;
-        auto C = Matrix<std::common_type_t<U, T>>::makeMatrix(A.m_rows, A.m_cols);
-
-        for (size_t i = 0; i < size; ++i) {
-            C.m_data[i] = A.m_data[i] * scalar;
-        }
-        return C;
+        return Matrix<std::common_type_t<U, T>>(A) *= scalar;
     }
 
 
