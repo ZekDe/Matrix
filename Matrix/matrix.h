@@ -10,7 +10,7 @@ namespace MathLab
     class Matrix : std::vector<T>
     {
     public:
-        static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec)
+        static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec) noexcept
         {
             align(rows, cols, tvec);
             return Matrix(rows, cols, std::move(tvec));

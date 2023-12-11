@@ -24,7 +24,7 @@ void printMatrix(const Matrix<T> &A)
 
 int main() 
 {
-
+    
     auto B = Matrix<int>::makeMatrix(4, 4, { 1,2,4,-80,
                                                -5,2,1,-10,
                                                 1,10,3,20,
@@ -43,7 +43,9 @@ int main()
     std::chrono::duration<double> duration = end - start;
     //cout << duration.count();
 
+    const vector<int> data(4, 2);
 
+    cout << is_nothrow_destructible_v<Matrix<float>>;
 
 
 

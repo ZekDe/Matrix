@@ -3,7 +3,7 @@
 namespace MathLab
 
 ```cpp
-Matrix<T> makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec);
+Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec) noexcept;
 
 Matrix<T> makeMatrix(size_t rows, size_t cols, T val = 0);
 
@@ -21,7 +21,7 @@ Matrix<T> makeLinSpace(T begin, T end, size_t n);
 Matrix<T> makeLinInc(T begin, T dt, T end);
 
 
-std::pair<size_t, size_t> size() const;
+std::pair<size_t, size_t> size() const noexcept; 
 void setSize(size_t rows, size_t cols);
 
 const T& operator()(size_t, size_t) const;
@@ -30,32 +30,25 @@ T& operator()(size_t, size_t);
 
 std::pair<size_t, size_t> operator()(T) const;
 
-template <typename U>
-Matrix<T>& operator*=(U);
+explicit operator Matrix<U>() const;
+explicit operator bool() const noexcept;
+const T& operator()(size_t, size_t) const noexcept;
+T& operator()(size_t, size_t) noexcept;
+std::pair<size_t, size_t> operator()(T) const noexcept;
+Matrix operator-() const;
+Matrix operator+() const;
+Matrix& operator++() noexcept;
+Matrix operator++(int);
 
-template<typename U>
-Matrix<T>& operator/=(U);
+Matrix& operator--() noexcept;
+Matrix operator--(int);
 
-template<typename U>
-Matrix<T>& operator+=(const Matrix<U>&);
-
-template<typename U>
-Matrix<T>& operator+=(U);
-
-template<typename U>
-Matrix<T>& operator-=(const Matrix<U>&);
-
-template<typename U>
-Matrix<T>& operator-=(U);
-
-Matrix<T> operator-() const;
-Matrix<T> operator+() const;
-
-Matrix<T>& operator++();
-Matrix<T> operator++(int);
-
-Matrix<T>& operator--();
-Matrix<T> operator--(int);
+Matrix<T>& operator*=(U) noexcept;
+Matrix<T>& operator/=(U) noexcept;
+Matrix<T>& operator+=(const Matrix<U>&) noexcept;
+Matrix<T>& operator+=(U) noexcept;
+Matrix<T>& operator-=(const Matrix<U>&) noexcept;
+Matrix<T>& operator-=(U) noexcept;
 ```
 ### Friends
 ```cpp
@@ -91,7 +84,7 @@ template <typename T, typename U>
 Matrix<std::common_type_t<U, T>> operator-(Matrix<T> A, const Matrix<U>& B);
 
 template <typename T>
-bool operator==(const Matrix<T>& A, const Matrix<T>& B);
+bool operator==(const Matrix<T>& A, const Matrix<T>& B) noexcept;
 
 template <typename T, typename U>
 Matrix<std::common_type_t<U, T>> operator*(U scalar, const Matrix<T>& A);
