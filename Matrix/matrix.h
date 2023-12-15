@@ -6,8 +6,8 @@
 
 namespace MathLab
 {
-    template <typename T>
-    class Matrix : std::vector<T>
+    template <typename T = double>
+    class Matrix
     {
     public:
         static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec) noexcept
@@ -60,6 +60,8 @@ namespace MathLab
 
         static Matrix makeLinSpace(T begin, T end, size_t n);
         static Matrix makeLinInc(T begin, T interval, T end);
+
+        Matrix& operator=(const Matrix&)& = default;
 
         std::pair<size_t, size_t> size() const noexcept;
 
@@ -118,11 +120,10 @@ namespace MathLab
         friend Matrix<std::common_type_t<U, T>> operator/(U, const Matrix<T>&);
 
     private:
+
         Matrix(size_t rows, size_t cols, std::vector<T> &&tvec = std::vector<T>()) :
             m_rows(rows), m_cols(cols), m_data(move(tvec))
         {}
-
-
 
         static void align(size_t, size_t, std::vector<T>&);
 
@@ -392,8 +393,8 @@ namespace MathLab
     }
 
 
-    template <typename T>
-    inline bool operator==(const Matrix<T>& A, const Matrix<T>& B) noexcept
+    template <typename T, typename U>
+    inline bool operator==(const Matrix<T>& A, const Matrix<U>& B) noexcept
     {
         auto [Arows, Acols] = A.size();
         auto [Brows, Bcols] = B.size();
@@ -518,7 +519,7 @@ namespace MathLab
 
         for (size_t i = 0; i < A.m_rows; i++)
             for (size_t j = 0; j < B.m_cols; j++) {
-                val = (common_type_t<U, T>)0.0;
+                val = 0;
                 for (size_t k = 0; k < A.m_cols; k++)
                     val += A.m_data[i + A.m_rows * k] * B.m_data[k + B.m_rows * j];
 

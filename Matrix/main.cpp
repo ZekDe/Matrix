@@ -3,7 +3,7 @@
 #include "iomatrix.h"
 #include <sstream>
 #include <chrono>
-
+#include <typeinfo>
 
 
 using namespace std;
@@ -20,6 +20,8 @@ void printMatrix(const Matrix<T> &A)
     }
 }; 
 
+
+
 #define PI 3.1415926535
 
 int main() 
@@ -33,21 +35,29 @@ int main()
     auto C = Matrix<float>::makeMatrix(3, 3, std::vector<float>
         {1,2,3,4,5,6,7,8,9});
 
-    auto D = Matrix<float>::makeMatrix(3, 3, {1,2,3, 3,4,5, 6,7,8});
+    auto D = Matrix<>::makeMatrix(3, 3, {1,2,3, 3,4,5, 6,7,8});
     auto I = Matrix<float>::makeEyeMatrix(4);
-    auto J = Matrix<float>::makeRandomMatrix(3, 3);
- 
+    auto J = Matrix<>::makeRandomMatrix(3, 3,0,20);
+     
+    std::mt19937 gen(std::random_device{}());
 
+    uniform_real_distribution<float> dis(0, 5);
+    //uniform_int_distribution<> dis(0, 5);
+
+    auto ab = dis(gen);
+
+    cout << (D == C);
+  
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
     //cout << duration.count();
 
-    const vector<int> data(4, 2);
-
-    cout << is_nothrow_destructible_v<Matrix<float>>;
+ 
 
 
+
+    
 
 
 
