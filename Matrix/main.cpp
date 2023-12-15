@@ -38,15 +38,13 @@ int main()
     auto D = Matrix<>::makeMatrix(3, 3, {1,2,3, 3,4,5, 6,7,8});
     auto I = Matrix<float>::makeEyeMatrix(4);
     auto J = Matrix<>::makeRandomMatrix(3, 3,0,20);
-     
-    std::mt19937 gen(std::random_device{}());
+    
+    std::vector<double> dataK =
+    { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-    uniform_real_distribution<float> dis(0, 5);
-    //uniform_int_distribution<> dis(0, 5);
+    auto K = Matrix<>::makeMatrix(3, 3, dataK);
 
-    auto ab = dis(gen);
 
-    cout << (D == C);
   
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();

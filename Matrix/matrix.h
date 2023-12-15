@@ -16,6 +16,13 @@ namespace MathLab
             return Matrix(rows, cols, std::move(tvec));
         }
 
+        static Matrix makeMatrix(size_t rows, size_t cols, const std::vector<T>& tvec)
+        {
+            auto vec{ tvec };
+            align(rows, cols, vec);
+            return Matrix(rows, cols, std::move(vec));
+        }
+
         static Matrix makeMatrix(size_t rows, size_t cols, T val = 0)
         {
             return Matrix(rows, cols, std::vector<T>(rows * cols, val));
