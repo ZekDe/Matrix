@@ -5,6 +5,8 @@ namespace MathLab
 ```cpp
 Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec) noexcept;
 
+static Matrix makeMatrix(size_t rows, size_t cols, const std::vector<T>& tvec);
+
 Matrix<T> makeMatrix(size_t rows, size_t cols, T val = 0);
 
 Matrix<T> makeMatrix(size_t rows, size_t cols, std::initializer_list<T>&& il);
