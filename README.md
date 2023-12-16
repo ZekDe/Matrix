@@ -148,7 +148,9 @@ auto E = Matrix<float>::makeLinInc(-PI, 0.5, PI);
 auto F = Matrix<float>::makeRandomMatrix(3, 3);
 auto I = Matrix<float>::makeEyeMatrix(3, 3);
 auto I1 = Matrix<float>::makeEyeMatrix(4);
-
+auto I = fMatrix::makeEyeMatrix(4);
+auto I = dMatrix::makeEyeMatrix(4);
+auto I = iMatrix::makeEyeMatrix(4);
 
 ```
 ### Example - Matrix Operations

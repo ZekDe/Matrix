@@ -36,22 +36,17 @@ int main()
         {1,2,3,4,5,6,7,8,9});
 
     auto D = Matrix<>::makeMatrix(3, 3, {1,2,3, 3,4,5, 6,7,8});
-    auto I = Matrix<float>::makeEyeMatrix(4);
-    auto J = Matrix<>::makeRandomMatrix(3, 3,0,20);
-    
-    std::vector<double> dataK =
-    { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+    auto J = Matrix<>::makeRandomMatrix(4, 3,0,20);
 
-    auto K = Matrix<>::makeMatrix(3, 3, dataK);
+    auto I = fMatrix::makeEyeMatrix(4);
+    cout << I;
 
-
-  
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
     //cout << duration.count();
 
- 
+  
 
 
 

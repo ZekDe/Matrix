@@ -9,6 +9,8 @@ namespace MathLab
     template <typename T = double>
     class Matrix
     {
+        static_assert(!std::is_same<T, bool>::value, "Matrix<bool> is not allowed");
+        static_assert(!std::is_same<T, size_t>::value, "Matrix<size_t> is not allowed");
     public:
         static Matrix makeMatrix(size_t rows, size_t cols, std::vector<T>&& tvec) noexcept
         {
@@ -67,7 +69,7 @@ namespace MathLab
 
         static Matrix makeLinSpace(T begin, T end, size_t n);
         static Matrix makeLinInc(T begin, T interval, T end);
-
+      
         Matrix& operator=(const Matrix&)& = default;
 
         std::pair<size_t, size_t> size() const noexcept;
@@ -138,12 +140,9 @@ namespace MathLab
         std::vector<T> m_data;
     };
 
-
-
-
-
-
-
+    using fMatrix = Matrix<float>;
+    using dMatrix = Matrix<>;
+    using iMatrix = Matrix<int>;
 
 
 
