@@ -39,8 +39,8 @@ int main()
     auto J = Matrix<>::makeRandomMatrix(4, 3,0,20);
 
     auto I = fMatrix::makeEyeMatrix(4);
-    cout << I;
-
+    cout << I.is_integral();
+    
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;

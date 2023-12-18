@@ -3,8 +3,7 @@
 
 namespace MathLab
 {
-    constexpr double tol = 1E-7;
-    constexpr size_t max_iter = 100;
+    constexpr static double tol = 1E-7;
 
     template<typename T>
     void swapRows(Matrix<T>& A, int row1, int row2)

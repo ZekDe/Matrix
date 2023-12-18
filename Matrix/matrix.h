@@ -76,6 +76,11 @@ namespace MathLab
 
         void setSize(size_t rows, size_t cols);
 
+        static bool is_integral() 
+        {
+            return std::is_integral_v<T>;
+        }
+
 
         template<typename U>
         explicit operator Matrix<U>() const;
