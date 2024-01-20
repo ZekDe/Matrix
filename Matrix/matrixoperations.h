@@ -3,7 +3,7 @@
 
 namespace MathLab
 {
-    constexpr static double tol = 1E-7;
+    inline constexpr static double tol = 1E-7;
 
     template<typename T>
     void swapRows(Matrix<T>& A, int row1, int row2)

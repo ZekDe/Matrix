@@ -26,7 +26,6 @@ void printMatrix(const Matrix<T> &A)
 
 int main() 
 {
-    
     auto B = Matrix<int>::makeMatrix(4, 4, { 1,2,4,-80,
                                                -5,2,1,-10,
                                                 1,10,3,20,
@@ -39,14 +38,16 @@ int main()
     auto J = Matrix<>::makeRandomMatrix(4, 3,0,20);
 
     auto I = fMatrix::makeEyeMatrix(4);
-    cout << I.is_integral();
+    //cout << I.is_integral();
     
     auto start = std::chrono::high_resolution_clock::now();
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
     //cout << duration.count();
 
-  
+    cout << I;
+   
+
 
 
 

@@ -72,10 +72,12 @@ namespace MathLab
       
         Matrix& operator=(const Matrix&)& = default;
 
+        [[nodiscard]]
         std::pair<size_t, size_t> size() const noexcept;
 
         void setSize(size_t rows, size_t cols);
 
+        [[nodiscard]]
         static bool is_integral() 
         {
             return std::is_integral_v<T>;
@@ -148,8 +150,6 @@ namespace MathLab
     using fMatrix = Matrix<float>;
     using dMatrix = Matrix<>;
     using iMatrix = Matrix<int>;
-
-
 
 
 

@@ -8,7 +8,6 @@ template <typename U>
 std::ostream& operator<<(std::ostream& os, const MathLab::Matrix<U>& A) // inserter 
 {
     auto [rows, cols] = A.size();
-
     if (!rows || !cols) {
         os << rows << "x" << cols << "\n" ;
         return os;
@@ -31,10 +30,8 @@ std::ostream& operator<<(std::ostream& os, const MathLab::Matrix<U>& A) // inser
     // get max length of line
     line_length_max += (cols - 1);
 
-    std::ostringstream ss;
-    ss << rows << cols;
-     
-    size_t rows_x_cols_length = ss.str().length() + 1;
+    size_t rows_x_cols_length = (std::ostringstream{} << rows << cols).str().length() + 1;
+
     rows_x_cols_length = std::abs((int)line_length_max - (int)rows_x_cols_length);
     
     os << std::string(line_length_max, '-') << '\n';
